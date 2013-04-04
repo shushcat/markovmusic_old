@@ -1,10 +1,10 @@
 from music21 import *
 from music21 import corpus
 
-# loads supported files into music21 streams; music21.stream.Score objects?
-
+# Accepts paths to files or calls to the music21 corpora; loads supported files into music21 streams; music21.stream.Score objects?
 def addFile(file):
-    converter.parseFile(file)
+    addedStream = converter.parseFile(file).flat # Parses and flattens so all notes can be compared. Flattening precedence is: offset time, priority, classSortOrder
+    print len(addedStream.notes)
 
 addFile('supplementary corpora/myboy.mid')
 # Hysterograms
