@@ -5,7 +5,7 @@ import sys
 import os
 
 # Modules in this directory
-import thisone
+import corporaIO 
 
 
 '''
@@ -25,4 +25,4 @@ def main():
 # the program.
 if __name__ == '__main__':
     main()
-    thisone.thatone()
+    corporaIO.thatone()
