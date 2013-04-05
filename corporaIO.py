@@ -3,11 +3,11 @@ from music21 import corpus
 
 # Accepts paths to files or calls to the music21 corpora; loads supported files into music21 streams; music21.stream.Score objects?
 def addFile(file):
-    addedStream = converter.parseFile(file).flat # Parses and flattens so all notes can be compared. Flattening precedence is: offset time, priority, classSortOrder
-    print len(addedStream.notes)
+    addedStream = converter.parseFile(file).flat # Parses and flattens so notes can be linearly compared. Flattening precedence is: offset time, priority, classSortOrder
+    return addedStream
 
-addFile('supplementary corpora/myboy.mid')
-# Hysterograms
+
+# My hysteriograms
 # streamObject = converter.parse(humdrum.testFiles.mazurka6)
 # stream2 = streamObject.stripTies()
 # correlated = graph.Plot3DBarsPitchSpaceQuarterLength(stream2.flat)
