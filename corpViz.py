@@ -6,9 +6,8 @@ import textwrap
 # Visualization libraries for access and manipulation of dot files. These are vital.
 import sys
 sys.path.append('..')
-# sys.path.append('/usr/lib/graphviz/python/')
+# sys.path.append('/usr/lib/graphviz/pythn/')
 # sys.path.append('/usr/lib64/graphviz/python/')
-import gv
 
 # Wrap label text at this number of characters
 # charsPerLine = 20;
@@ -22,26 +21,12 @@ import gv
 # waitColor = 'white'
 # deletedColor = 'pink';
 
-# The width of the border around the tasks:
-# penWidth = 1
-
-# Corrected arrow direction so I don't get confused (but actually so that arrows show super and subsets).
-# dir = 'back'
-
-# HEADER = "digraph  dependencies { layout=neato;   splines=true; overlap=scalexy;  rankdir=LR; weight=2;"
-
-#More information on setting up graphviz: http://www.graphviz.org/doc/info/attrs.html
-
-
-# Copyright (c) 2007-2008 Pedro Matiello <pmatiello@gmail.com>
-# License: MIT (see COPYING file)
-
 # Import graphviz
 import sys
 import pydot
 
 # Import from pydot
-from pydot.classes.graph import graph
+from pydot.object import graph
 from pydot.classes.digraph import digraph
 from pydot.algorithms.searching import breadth_first_search
 from pydot.readwrite.dot import write
