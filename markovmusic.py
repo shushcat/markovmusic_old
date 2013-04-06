@@ -9,10 +9,12 @@ import corporaIO
 # import chainBuilder
 # import coprViz
 
+# Pieces to be processed
+pieceList = ['supplementary corpora/myboy.mid','supplementary corpora/WTK1.mid']
+
 def main():
-    fileList = ['supplementary corpora/myboy.mid','supplementary corpora/WTK1.mid']
-    for file in fileList:
-        added = corporaIO.addPiece(file)
+    for piece in pieceList:
+        added = corporaIO.addPiece(piece)
         print added
 
     # Remember! Command line args are in sys.argv[1], sys.argv[2] ...
