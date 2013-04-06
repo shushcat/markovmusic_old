@@ -1,74 +1,165 @@
 #!/usr/bin/env python
-# Potentially extraneous.
+'graph dependencies in projects'
 from subprocess import Popen, PIPE
 import subprocess
+import sys
 import textwrap
-# Visualization libraries for access and manipulation of dot files. These are vital.
-import sys
-sys.path.append('..')
-# sys.path.append('/usr/lib/graphviz/pythn/')
-# sys.path.append('/usr/lib64/graphviz/python/')
 
-# Wrap label text at this number of characters
-# charsPerLine = 20;
+#Wrap label text at this number of characters
+charsPerLine = 20;
 
 
-# Full list of colors here: http://www.graphviz.org/doc/info/colors.html
-# blockedColor = 'gold4'
-# maxUrgencyColor = 'red2' # Color of the tasks that have absolutely the highest urgency
-# unblockedColor = 'green'
-# doneColor = 'grey'
-# waitColor = 'white'
-# deletedColor = 'pink';
+#full list of colors here: http://www.graphviz.org/doc/info/colors.html
+blockedColor = 'gold4'
+maxUrgencyColor = 'red2' #color of the tasks that have absolutely the highest urgency
+unblockedColor = 'green'
+doneColor = 'grey'
+waitColor = 'white'
+deletedColor = 'pink';
 
-# Import graphviz
-import sys
-import pydot
+#The width of the border around the tasks:
+penWidth = 1
 
-# Import from pydot
-from pydot.object import graph
-from pydot.classes.digraph import digraph
-from pydot.algorithms.searching import breadth_first_search
-from pydot.readwrite.dot import write
+#Corrected arrow direction so I don't get confused.
+dir = 'back'
 
-# Graph creation
-gr = graph()
+#Have one HEADER (and only one) uncommented at a time, or the last uncommented value will be the only one considered
 
-# Add nodes and edges
-gr.add_nodes(["Portugal","Spain","France","Germany","Belgium","Netherlands","Italy"])
-gr.add_nodes(["Switzerland","Austria","Denmark","Poland","Czech Republic","Slovakia","Hungary"])
-gr.add_nodes(["England","Ireland","Scotland","Wales"])
+#Left to right layout, my favorite, ganntt-ish
+#HEADER = "digraph  dependencies { splines=true; overlap=ortho; rankdir=LR; weight=2;"
 
-gr.add_edge(("Portugal", "Spain"))
-gr.add_edge(("Spain","France"))
-gr.add_edge(("France","Belgium"))
-gr.add_edge(("France","Germany"))
-gr.add_edge(("France","Italy"))
-gr.add_edge(("Belgium","Netherlands"))
-gr.add_edge(("Germany","Belgium"))
-gr.add_edge(("Germany","Netherlands"))
-gr.add_edge(("England","Wales"))
-gr.add_edge(("England","Scotland"))
-gr.add_edge(("Scotland","Wales"))
-gr.add_edge(("Switzerland","Austria"))
-gr.add_edge(("Switzerland","Germany"))
-gr.add_edge(("Switzerland","France"))
-gr.add_edge(("Switzerland","Italy"))
-gr.add_edge(("Austria","Germany"))
-gr.add_edge(("Austria","Italy"))
-gr.add_edge(("Austria","Czech Republic"))
-gr.add_edge(("Austria","Slovakia"))
-gr.add_edge(("Austria","Hungary"))
-gr.add_edge(("Denmark","Germany"))
-gr.add_edge(("Poland","Czech Republic"))
-gr.add_edge(("Poland","Slovakia"))
-gr.add_edge(("Poland","Germany"))
-gr.add_edge(("Czech Republic","Slovakia"))
-gr.add_edge(("Czech Republic","Germany"))
-gr.add_edge(("Slovakia","Hungary"))
+#Spread tasks on page
+HEADER = "digraph  dependencies { layout=neato;   splines=true; overlap=scalexy;  rankdir=LR; weight=2;"
 
-# Draw as PNG
-dot = write(gr)
-gvv = gv.readstring(dot)
-gv.layout(gvv,'dot')
-gv.render(gvv,'png','europe.png')
+#More information on setting up graphviz: http://www.graphviz.org/doc/info/attrs.html
+
+
+#-----------------------------------------#
+#  Editing under this might break things  #
+#-----------------------------------------#
+
+FOOTER = "}"
+
+JSON_START = '['
+JSON_END = ']'
+
+validUuids = list()
+
+def call_taskwarrior(cmd):
+    'call taskwarrior, returning output and error'
+    tw = Popen(['task'] + cmd.split(), stdout=PIPE, stderr=PIPE)
+    return tw.communicate()
+
+def get_json(query):
+    'call taskwarrior, returning objects from json'
+    result, err = call_taskwarrior('end.after:today xor status:pending export %s' % query)
+    return json.loads(JSON_START + result + JSON_END)
+
+def call_dot(instr):
+    'call dot, returning stdout and stdout'
+    dot = Popen('dot -Tgv'.split(), stdout=PIPE, stderr=PIPE, stdin=PIPE)
+    return dot.communicate(instr)
+
+if __name__ == '__main__':
+    query = sys.argv[1:]
+    print ('Calling TaskWarrior')
+    data = get_json(' '.join(query))
+    #print data
+    
+    maxUrgency = -9999;
+    for datum in data:
+        if float(datum['urgency']) > maxUrgency:
+            maxUrgency = float(datum['urgency'])
+
+
+    # first pass: labels
+    lines = [HEADER]
+    print ('Printing Labels')
+    for datum in data:
+        validUuids.append(datum['uuid'])
+        if datum['description']:
+
+            style = ''
+            color = ''
+            style = 'filled'
+
+            if datum['status']=='pending':
+                prefix = datum['id']
+                if not datum.get('depends','') : color = unblockedColor
+                else :
+                    hasPendingDeps = 0
+                    for depend in datum['depends'].split(','):
+                        for datum2 in data:
+                            if datum2['uuid'] == depend and datum2['status'] == 'pending':
+                               hasPendingDeps = 1
+                    if hasPendingDeps == 1 : color = blockedColor
+                    else : color = unblockedColor
+
+            elif datum['status'] == 'waiting':
+                prefix = 'WAIT'
+                color = waitColor
+            elif datum['status'] == 'completed':
+                prefix = 'DONE'
+                color = doneColor
+            elif datum['status'] == 'deleted':
+                prefix = 'DELETED'
+                color = deletedColor
+            else:
+                prefix = ''
+                color = 'white'
+
+
+            if float(datum['urgency']) == maxUrgency:
+                color = maxUrgencyColor
+
+            label = '';
+            descriptionLines = textwrap.wrap(datum['description'],charsPerLine);
+            for descLine in descriptionLines:
+                label += descLine+"\\n";
+    
+            lines.append('"%s"[shape=box][penwidth=%d][label="%s\:%s"][fillcolor=%s][style=%s]' % (datum['uuid'], penWidth, prefix, label, color, style))
+            #documentation http://www.graphviz.org/doc/info/attrs.html
+
+
+
+    # second pass: dependencies
+    print ('Resolving Dependencies')
+    for datum in data:
+        if datum['description']:
+            for dep in datum.get('depends', '').split(','):
+                #print ("\naaa %s" %dep)
+                if dep!='' and dep in validUuids:
+                    lines.append('"%s" -> "%s"[dir=%s];' % (dep, datum['uuid'], dir))
+                    continue
+
+    # third pass: projects
+    print ('Making and Linking Project Nodes')
+    for datum in data:
+        for proj in datum.get('project', '').split(','):
+            if proj != '':
+                lines.append('"%s" -> "%s"[dir=both][arrowtail=odot];' % (proj, datum['uuid']))
+                lines.append('"%s"[shape=circle][fontsize=40.0][penwidth=16][color=gray52]' % (proj))
+                continue
+
+    # third pass: tags
+    print ('Making and Linking Tag Nodes')
+    for datum in data:
+        for tag in datum.get('tags',''):
+            if tag != '':
+                lines.append('"%s" -> "%s";' % (datum['uuid'], tag))
+                lines.append('"%s"[shape=square][fontsize=24.0][penwidth=8]' % (tag))
+                continue
+
+    lines.append(FOOTER)
+
+    print ('Calling dot')
+    gv, err = call_dot('\n'.join(lines))
+    if err != '':
+        print ('Error calling dot:')
+        print (err.strip())
+
+    print ('Writing to taskgv.gv')
+    with open('/tmp/taskgv.gv', 'w') as f:
+        f.write(gv)
+
+subprocess.call("open /tmp/taskgv.gv", shell = True)
