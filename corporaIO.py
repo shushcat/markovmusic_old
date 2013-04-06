@@ -2,9 +2,9 @@ from music21 import *
 from music21 import corpus
 
 # Accepts paths to files or calls to the music21 corpora; loads supported files into music21 streams; music21.stream.Score objects?
-def addFile(file):
-    addedStream = converter.parseFile(file).flat # Parses and flattens so notes can be linearly compared. Flattening precedence is: offset time, priority, classSortOrder
-    return addedStream
+def addPiece(piece):
+    addFlat = converter.parseFile(piece).flat # Parses and flattens so notes can be linearly compared. Flattening precedence is: offset time, priority (low to high?), classSortOrder
+    return addFlat
 
 
 # My hysteriograms

@@ -6,13 +6,14 @@ import os
 
 # Modules in this directory
 import corporaIO 
-import chainBuilder
+# import chainBuilder
+# import coprViz
 
 def main():
-    stream1 = corporaIO.addFile('supplementary corpora/myboy.mid')
-    stream2 = corporaIO.addFile('supplementary corpora/WTK1.mid')
-    print len(stream1)
-    print len(stream2)
+    fileList = ['supplementary corpora/myboy.mid','supplementary corpora/WTK1.mid']
+    for file in fileList:
+        added = corporaIO.addPiece(file)
+        print added
 
     # Remember! Command line args are in sys.argv[1], sys.argv[2] ...
     # sys.argv[0] is the script name itself and can be ignored

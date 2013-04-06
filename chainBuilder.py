@@ -4,5 +4,5 @@ Bayes' Theorem:
 '''
 
 # P of each note in each piece given the immediately preceding note.
-def probNext(
+def probNext()
 
