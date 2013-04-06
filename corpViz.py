@@ -5,13 +5,14 @@ import subprocess
 import sys
 import textwrap
 
-#Wrap label text at this number of characters
+# Wrap label text at this number of characters
 charsPerLine = 20;
 
 
-#full list of colors here: http://www.graphviz.org/doc/info/colors.html
+# Color defs.
+# full list of colors here: http://www.graphviz.org/doc/info/colors.html
 blockedColor = 'gold4'
-maxUrgencyColor = 'red2' #color of the tasks that have absolutely the highest urgency
+maxUrgencyColor = 'red2' 
 unblockedColor = 'green'
 doneColor = 'grey'
 waitColor = 'white'
@@ -20,7 +21,7 @@ deletedColor = 'pink';
 #The width of the border around the tasks:
 penWidth = 1
 
-#Corrected arrow direction so I don't get confused.
+# Arrows directed to more obviously indicate inclusion; may be able to remove this.
 dir = 'back'
 
 #Have one HEADER (and only one) uncommented at a time, or the last uncommented value will be the only one considered
@@ -45,32 +46,18 @@ JSON_END = ']'
 
 validUuids = list()
 
-def call_taskwarrior(cmd):
-    'call taskwarrior, returning output and error'
-    tw = Popen(['task'] + cmd.split(), stdout=PIPE, stderr=PIPE)
-    return tw.communicate()
-
-def get_json(query):
-    'call taskwarrior, returning objects from json'
-    result, err = call_taskwarrior('end.after:today xor status:pending export %s' % query)
-    return json.loads(JSON_START + result + JSON_END)
-
 def call_dot(instr):
     'call dot, returning stdout and stdout'
     dot = Popen('dot -Tgv'.split(), stdout=PIPE, stderr=PIPE, stdin=PIPE)
     return dot.communicate(instr)
 
-if __name__ == '__main__':
-    query = sys.argv[1:]
-    print ('Calling TaskWarrior')
-    data = get_json(' '.join(query))
+def corpora(pieces):
+
     #print data
-    
     maxUrgency = -9999;
     for datum in data:
         if float(datum['urgency']) > maxUrgency:
             maxUrgency = float(datum['urgency'])
-
 
     # first pass: labels
     lines = [HEADER]
