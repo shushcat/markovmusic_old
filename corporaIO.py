@@ -7,14 +7,24 @@ def addPiece(piece):
     added = converter.parseFile(piece)
     piecePitches = [str(p) for p in added.pitches]
     baseFreq = noteFreq(piecePitches)
-    return baseFreq
+    baseProb = noteProb(baseFreq)
+    return baseProb
+
 
 def noteFreq(piecePitches):
     # Dictionary of overall note frequencies per piece.
-    baseFreq = {}
+    noteFreqs = {}
     for piece in piecePitches:
-        baseFreq[piece] = baseFreq.get(piece, 0) + 1
-    return baseFreq
+        noteFreqs[piece] = noteFreqs.get(piece, 0) + 1
+    return noteFreqs
+
+def noteProb(noteFreqs):
+    # Dictionary of overall note probabilities per piece.
+    total = float(len(noteFreqs))
+    noteProbs = {}
+    for notes, freqs in noteFreqs.items():
+        noteProbs[notes] = freqs / total
+    return noteProbs
 
 # This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece.
 
