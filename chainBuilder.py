@@ -2,32 +2,32 @@ from __future__ import division
 # Gotta use regexes for this bit.
 import re
 # Build 12 key dictionary with values for note occurances.
-def noteFreq(piecePitches):
+def noteFreqs(piecePitches):
     noteFreqs = {}
     for pitch in piecePitches:
-        if re.search('A.', pitch):
+        if re.search('A\d', pitch) or re.search('A-\d', pitch):
             noteFreqs['A'] = noteFreqs.get('A', 0) + 1
-        if re.search('A#.', pitch):
+        if re.search('A#\d', pitch) or re.search('A#-\d', pitch):
             noteFreqs['A#'] = noteFreqs.get('A#', 0) + 1
-        if re.search('B.', pitch):
+        if re.search('B\d', pitch) or re.search('B-\d', pitch):
             noteFreqs['B'] = noteFreqs.get('B', 0) + 1
-        if re.search('C.', pitch):
+        if re.search('C\d', pitch) or re.search('C-\d', pitch):
             noteFreqs['C'] = noteFreqs.get('C', 0) + 1
-        if re.search('C#.', pitch):
+        if re.search('C#\d', pitch) or re.search('C#-\d', pitch):
             noteFreqs['C#'] = noteFreqs.get('C#', 0) + 1
-        if re.search('D.', pitch):
+        if re.search('D\d', pitch) or re.search('D-\d', pitch):
             noteFreqs['D'] = noteFreqs.get('D', 0) + 1
-        if re.search('D#.', pitch):
+        if re.search('D#\d', pitch) or re.search('D#-\d', pitch):
             noteFreqs['D#'] = noteFreqs.get('D#', 0) + 1
-        if re.search('E.', pitch):
+        if re.search('E\d', pitch) or re.search('E-\d', pitch):
             noteFreqs['E'] = noteFreqs.get('E', 0) + 1
-        if re.search('F.', pitch):
+        if re.search('F\d', pitch) or re.search('F-\d', pitch):
             noteFreqs['F'] = noteFreqs.get('F', 0) + 1
-        if re.search('F#.', pitch):
+        if re.search('F#\d', pitch) or re.search('F#-\d', pitch):
             noteFreqs['F#'] = noteFreqs.get('F#', 0) + 1
-        if re.search('G.', pitch):
+        if re.search('G\d', pitch) or re.search('G-\d', pitch):
             noteFreqs['G'] = noteFreqs.get('G', 0) + 1
-        if re.search('G#.', pitch):
+        if re.search('G#\d', pitch) or re.search('G#-\d', pitch):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
     return noteFreqs
 
@@ -55,4 +55,39 @@ def probNext():
 Bayes' Theorem:
     P(x|y) = P(x)P(y|x)/P(y)
     To be used for generation of transition tables.
+'''
+
+'''
+
+# Modifying!
+
+def fwd_bkw(x, notes, a_0, a, e, end_note):
+    L = len(x)
+ 
+ 
+    # Run forward
+    for l, x_i in enumerate(x):
+         fwd = []
+    f_prev = {}
+    f_curr = {}
+        for note in notes:
+            if i == 0:
+                prev_f_sum = a_0[st]
+ 
+        f_prev = f_curr
+ 
+    p_fwd = sum(f_curr[l]*a[l][end_st] for k in states)
+ 
+    bkw = []
+    b_prev = {}
+    # Run bkw
+ 
+    p_bkw = sum(a_0[1] * e[l][x[1]] * b_curr[0] for l in states)
+ 
+    posterior = {}
+    for st in states:
+        posterior[st] = [fwd[i][st]*bkw[i][st]/p_fwd for i in xrange(L)]
+ 
+    assert p_fwd == p_bkw
+    return fwd, bkw, posterior
 '''
