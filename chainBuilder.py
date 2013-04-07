@@ -15,4 +15,27 @@ def noteProb(noteFreqs):
     return noteProbs
 
 # This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece.
-# return something interpretable by chainBuilder.py?
+
+'''
+def getFreqs(piecePitches):
+    # Dictionary of overall note frequencies per piece.
+    pitchFreqs = {}
+    for piece in piecePitches:
+        pitchFreqs[piece] = pitchFreqs.get(piece, 0) + 1
+    return pitchFreqs
+
+def sumFreqs(pitchFreqs):
+    # Some kinda regular expression search here...
+    if 'A\d'
+    # elif 'A#'
+    # elif 'B'
+    # elif 'C'
+    # elif 'C#'
+    # elif 'D'
+    # elif 'D#'
+    # elif 'E'
+    # elif 'F'
+    # elif 'F#'
+    # elif 'G'
+    # elif 'G#'
+'''

@@ -7,7 +7,7 @@ import os
 # Modules in this directory
 import corporaIO 
 # import chainBuilder
-# import coprViz
+# import corpViz
 
 # Pieces to be processed
 pieceList = ['supplementary corpora/myboy.mid','supplementary corpora/WTK1.mid']
