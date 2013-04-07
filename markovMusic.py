@@ -18,16 +18,16 @@ Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is t
 
 n = 0
 for piece in pieceList:
-    added = corporaIO.listPitches(piece)
+    added = corporaIO.pitchList(piece)
     print '-'*64
     print pieceList[n]
     print '-'*64
-    print 'Frequency of each pitch:'
-    print chainBuilder.pitchFreq(added)
+    print 'Frequency(occurrence) of each note:'
+    print chainBuilder.noteFreq(added)
     print '\n'
-    print 'Independent probability of each pitch:'
-    print chainBuilder.noteProb(chainBuilder.pitchFreq(added))
+    print 'Independent probability of each note:'
+    print chainBuilder.noteProb(chainBuilder.noteFreq(added))
     print '\n'
-    print 'Total pitches in piece: ' + str(chainBuilder.totalNotes(chainBuilder.pitchFreq(added)))
+    print 'Total notes in piece: ' + str(chainBuilder.totalNotes(chainBuilder.noteFreq(added)))
     print '\n'
     n = n + 1

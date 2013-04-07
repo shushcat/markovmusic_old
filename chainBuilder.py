@@ -2,53 +2,55 @@ from __future__ import division
 # Gotta use regexes for this bit.
 import re
 # Build 12 key dictionary with values for note occurances.
-def pitchFreq(piecePitches):
-    pitchFreqs = {}
+def noteFreq(piecePitches):
+    noteFreqs = {}
     for pitch in piecePitches:
         if re.search('A.', pitch):
-            pitchFreqs['A'] = pitchFreqs.get('A', 0) + 1
+            noteFreqs['A'] = noteFreqs.get('A', 0) + 1
         if re.search('A#.', pitch):
-            pitchFreqs['A#'] = pitchFreqs.get('A#', 0) + 1
+            noteFreqs['A#'] = noteFreqs.get('A#', 0) + 1
         if re.search('B.', pitch):
-            pitchFreqs['B'] = pitchFreqs.get('B', 0) + 1
+            noteFreqs['B'] = noteFreqs.get('B', 0) + 1
         if re.search('C.', pitch):
-            pitchFreqs['C'] = pitchFreqs.get('C', 0) + 1
+            noteFreqs['C'] = noteFreqs.get('C', 0) + 1
         if re.search('C#.', pitch):
-            pitchFreqs['C#'] = pitchFreqs.get('C#', 0) + 1
+            noteFreqs['C#'] = noteFreqs.get('C#', 0) + 1
         if re.search('D.', pitch):
-            pitchFreqs['D'] = pitchFreqs.get('D', 0) + 1
+            noteFreqs['D'] = noteFreqs.get('D', 0) + 1
         if re.search('D#.', pitch):
-            pitchFreqs['D#'] = pitchFreqs.get('D#', 0) + 1
+            noteFreqs['D#'] = noteFreqs.get('D#', 0) + 1
         if re.search('E.', pitch):
-            pitchFreqs['E'] = pitchFreqs.get('E', 0) + 1
+            noteFreqs['E'] = noteFreqs.get('E', 0) + 1
         if re.search('F.', pitch):
-            pitchFreqs['F'] = pitchFreqs.get('F', 0) + 1
+            noteFreqs['F'] = noteFreqs.get('F', 0) + 1
         if re.search('F#.', pitch):
-            pitchFreqs['F#'] = pitchFreqs.get('F#', 0) + 1
+            noteFreqs['F#'] = noteFreqs.get('F#', 0) + 1
         if re.search('G.', pitch):
-            pitchFreqs['G'] = pitchFreqs.get('G', 0) + 1
+            noteFreqs['G'] = noteFreqs.get('G', 0) + 1
         if re.search('G#.', pitch):
-            pitchFreqs['G#'] = pitchFreqs.get('G#', 0) + 1
-    return pitchFreqs
+            noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
+    return noteFreqs
 
 # Total number of notes in a piece.
-def totalNotes(pitchFreqs):
+def totalNotes(noteFreqs):
     total = 0
-    for freq in pitchFreqs:
-        total = total + pitchFreqs.get(freq)
+    for freq in noteFreqs:
+        total = total + noteFreqs.get(freq)
     return total
 
-# Overall note probabilities per piece.
-def noteProb(pitchFreqs):
+# Independent p(note).
+def noteProb(noteFreqs):
     noteProbs = {}
-    for pitch, freq in pitchFreqs.items():
-        noteProbs[pitch] = freq / totalNotes(pitchFreqs)
+    for pitch, freq in noteFreqs.items():
+        noteProbs[pitch] = freq / totalNotes(noteFreqs)
     return noteProbs
 
 # P of each note in each piece given the immediately preceding note.
-# def probNext():
+def probNext():
+    print 'wuttup'
 
-# This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece.
+# This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece. Best implemented as a 144 key dictionary.
+
 '''
 Bayes' Theorem:
     P(x|y) = P(x)P(y|x)/P(y)
