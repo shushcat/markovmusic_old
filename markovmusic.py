@@ -13,9 +13,12 @@ import corporaIO
 pieceList = ['supplementary corpora/myboy.mid','supplementary corpora/WTK1.mid']
 
 def main():
+    n = 0
     for piece in pieceList:
         added = corporaIO.addPiece(piece)
+        print pieceList[n]
         print added
+        n = n + 1
 
     # Remember! Command line args are in sys.argv[1], sys.argv[2] ...
     # sys.argv[0] is the script name itself and can be ignored

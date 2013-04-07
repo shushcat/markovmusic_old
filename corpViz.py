@@ -1,48 +1,30 @@
 #!/usr/bin/env python
-'graph dependencies in projects'
+'Weighted graph of processed corpora via GraphViz.'
 from subprocess import Popen, PIPE
 import subprocess
 import sys
 import textwrap
 
-# Wrap label text at this number of characters
+# Wrap node label text at this number of characters
 charsPerLine = 20;
 
-
-# Color defs.
+# Color defs; figure these out later.
 # full list of colors here: http://www.graphviz.org/doc/info/colors.html
-blockedColor = 'gold4'
-maxUrgencyColor = 'red2' 
-unblockedColor = 'green'
-doneColor = 'grey'
-waitColor = 'white'
-deletedColor = 'pink';
+aColor = 'red2'
+anotherColor = 'green';
 
-#The width of the border around the tasks:
+#The width of the border around the nodes:
 penWidth = 1
 
-# Arrows directed to more obviously indicate inclusion; may be able to remove this.
-dir = 'back'
+# Arrow heads will need attention...
+arrowHead = 'dot'
 
-#Have one HEADER (and only one) uncommented at a time, or the last uncommented value will be the only one considered
-
-#Left to right layout, my favorite, ganntt-ish
-#HEADER = "digraph  dependencies { splines=true; overlap=ortho; rankdir=LR; weight=2;"
-
-#Spread tasks on page
+#Spread nodes on page
 HEADER = "digraph  dependencies { layout=neato;   splines=true; overlap=scalexy;  rankdir=LR; weight=2;"
 
 #More information on setting up graphviz: http://www.graphviz.org/doc/info/attrs.html
 
-
-#-----------------------------------------#
-#  Editing under this might break things  #
-#-----------------------------------------#
-
 FOOTER = "}"
-
-JSON_START = '['
-JSON_END = ']'
 
 validUuids = list()
 
@@ -54,10 +36,10 @@ def call_dot(instr):
 def corpora(pieces):
 
     #print data
-    maxUrgency = -9999;
+    maxAttraction= -9999;
     for datum in data:
-        if float(datum['urgency']) > maxUrgency:
-            maxUrgency = float(datum['urgency'])
+        if float(datum['attraction']) > maxAttraction:
+            maxAttraction = float(datum['attraction'])
 
     # first pass: labels
     lines = [HEADER]
@@ -108,7 +90,7 @@ def corpora(pieces):
             #documentation http://www.graphviz.org/doc/info/attrs.html
 
 
-
+# Examples of modification to be applied to specific classes of nodes
     # second pass: dependencies
     print ('Resolving Dependencies')
     for datum in data:
@@ -145,8 +127,8 @@ def corpora(pieces):
         print ('Error calling dot:')
         print (err.strip())
 
-    print ('Writing to taskgv.gv')
-    with open('/tmp/taskgv.gv', 'w') as f:
+    print ('Writing to corpViz.gv')
+    with open('/tmp/corpViz.gv', 'w') as f:
         f.write(gv)
 
-subprocess.call("open /tmp/taskgv.gv", shell = True)
+subprocess.call("open /tmp/corpViz.gv", shell = True)

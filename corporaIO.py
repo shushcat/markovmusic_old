@@ -1,37 +1,26 @@
 from music21 import *
 from music21 import corpus
 
+'Accepts paths to supported filetypes and returns a list of pitches and their frequencies.'
+
 # Makes music21.stream.Score objects
 def addPiece(piece):
-    # Parses and flattens so notes can be linearly compared. Flattening precedence is: offset time, priority (low to high?), classSortOrder
+    # Parses and flattens so notes can be linearly compared. Flattening precedence is: offset time, priority (low to high?), classSortOrder and takes place automatically when applying the str() method.
     added = converter.parseFile(piece)
     piecePitches = [str(p) for p in added.pitches]
-    baseFreq = noteFreq(piecePitches)
-    baseProb = noteProb(baseFreq)
-    return baseProb
+    pitchFreqs = getFreqs(piecePitches)
+    return pitchFreqs 
 
 
-def noteFreq(piecePitches):
+def getFreqs(piecePitches):
     # Dictionary of overall note frequencies per piece.
-    noteFreqs = {}
+    pitchFreqs = {}
     for piece in piecePitches:
-        noteFreqs[piece] = noteFreqs.get(piece, 0) + 1
-    return noteFreqs
+        pitchFreqs[piece] = pitchFreqs.get(piece, 0) + 1
+    return pitchFreqs
 
-def noteProb(noteFreqs):
-    # Dictionary of overall note probabilities per piece.
-    total = float(len(noteFreqs))
-    noteProbs = {}
-    for notes, freqs in noteFreqs.items():
-        noteProbs[notes] = freqs / total
-    return noteProbs
-
-# This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece.
-
-# My hysteriograms
-# streamObject = converter.parse(humdrum.testFiles.mazurka6)
+# My precious hysteriograms
+# streamObject = converter.parse(humdrum.testFiles.piece)
 # stream2 = streamObject.stripTies()
 # correlated = graph.Plot3DBarsPitchSpaceQuarterLength(stream2.flat)
 # correlated.process() 
-
-# return something interpretable by chainBuilder
