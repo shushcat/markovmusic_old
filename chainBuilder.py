@@ -32,6 +32,7 @@ def noteFreqs(pitchList):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
     return noteFreqs
 
+
 # Total number of notes in a piece.
 def totalNotes(noteFreqs):
     total = 0
@@ -47,10 +48,21 @@ def indProbs(noteFreqs):
     return indProbs
 
 # Accepts two independent probabilities and returns probThat given probThis.
-def thatThis(probThat, probThis, probThisThat):
-    probThatThis = (probThat * probThisThat)/probThis
+def depProbs(nextNote, transDict):
+    depProbs = {}
+    probThatThis = transDict
     print probThat
     print probThis
+
+def probTrans(transDict):
+    totalProb = 0
+    totalTrans = 0
+    for trans in transDict:
+        totalTrans = totalTrans + transDict[trans]
+        print 'The transition ' + str(trans) + ' has a probability of ' + str(transDict[trans]/totalTrans)
+        totalProb = totalProb + transDict[trans]/totalTrans
+    print totalProb
+
 
 def depProb(transDict):
     depProb

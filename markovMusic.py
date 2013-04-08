@@ -41,7 +41,7 @@ for piece in pieceList:
                 transDict[thisThat] = transDict.get(thisThat, 0) + 1
             nextNum = nextNum + 1
         noteNum = noteNum + 1
-    print transDict
+    chainBuilder.probTrans(transDict)
     print '\n'
 
 #    noteNum = 0
@@ -54,7 +54,7 @@ for piece in pieceList:
 #    print 'Independent probability of each note:'
 #    print indProbs
 #    print '\n'
-#    print 'Total notes in piece: ' + str(totalNotes)
+    print 'Total notes in piece: ' + str(totalNotes)
 #    print '\n'
 #    chainBuilder.thatThis(indProbs['A'], indProbs['B'])
 #    print chainBuilder.probNext('A')
