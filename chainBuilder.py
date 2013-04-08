@@ -46,11 +46,11 @@ def indProbs(noteFreqs):
         indProbs[pitch] = freq / totalNotes(noteFreqs)
     return indProbs
 
-# Dependent p(note | preceding note) per peice of each note in each piece given the immediately preceding note.
-# Accepts two independent probabilities.
-def thisThat(probThis, probThat):
-    print probThis
+# Accepts two independent probabilities and returns probThat given probThis.
+def thatThis(probThat, probThis):
+    probThatThis = (probThat * probThisThat)/probThis
     print probThat
+    print probThis
     return 'Yo.'
 
 # This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece. Best implemented as a 144 key dictionary.
@@ -64,40 +64,4 @@ Bayes' Theorem:
     P(next | preceding) = P(next)P(preceding | next)/P(preceding)
 
     Forward-backward algorithm is the way to go, really, but can be deferred for now since that would be overreaching current project scope.
-'''
-
-'''
-
-Python example from Wikipedia/Russel and Norvig:
-
-
-def fwd_bkw(x, pitchList, a_0, a, e, end_note):
-    L = len(x)
- 
- 
-    # Run forward
-    for l, x_i in enumerate(x):
-         fwd = []
-    f_prev = {}
-    f_curr = {}
-        for note in notes:
-            if i == 0:
-                prev_f_sum = a_0[st]
- 
-        f_prev = f_curr
- 
-    p_fwd = sum(f_curr[l]*a[l][end_st] for k in notes)
- 
-    bkw = []
-    b_prev = {}
-    # Run bkw
- 
-    p_bkw = sum(a_0[1] * e[l][x[1]] * b_curr[0] for l in notes)
- 
-    posterior = {}
-    for st in notes:
-        posterior[st] = [fwd[i][st]*bkw[i][st]/p_fwd for i in xrange(L)]
- 
-    assert p_fwd == p_bkw
-    return fwd, bkw, posterior
 '''

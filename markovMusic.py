@@ -34,7 +34,6 @@ for piece in pieceList:
 #        print str(pitchList[noteNum]) + ' is followed by ' + str(pitchList[noteNum + 1])
 #        noteNum = noteNum + 1
     print '\n'
-
 #    print 'Frequency(occurrence) of each note:'
 #    print noteFreqs
 #    print '\n'
@@ -43,6 +42,6 @@ for piece in pieceList:
 #    print '\n'
 #    print 'Total notes in piece: ' + str(totalNotes)
 #    print '\n'
-    chainBuilder.thisThat(indProbs['A'], indProbs['B'])
+    chainBuilder.thatThis(indProbs['A'], indProbs['B'])
 #    print chainBuilder.probNext('A')
     n = n + 1
