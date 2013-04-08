@@ -3,9 +3,9 @@ from __future__ import division
 import re
 
 # Build 12 key dictionary with values for note occurances.
-def noteFreqs(piecePitches):
+def noteFreqs(pitchList):
     noteFreqs = {}
-    for pitch in piecePitches:
+    for pitch in pitchList:
         if re.search('A\d', pitch) or re.search('A-\d', pitch):
             noteFreqs['A'] = noteFreqs.get('A', 0) + 1
         if re.search('A#\d', pitch) or re.search('A#-\d', pitch):
@@ -47,11 +47,13 @@ def indProbs(noteFreqs):
     return indProbs
 
 # Accepts two independent probabilities and returns probThat given probThis.
-def thatThis(probThat, probThis):
+def thatThis(probThat, probThis, probThisThat):
     probThatThis = (probThat * probThisThat)/probThis
     print probThat
     print probThis
-    return 'Yo.'
+
+def depProb(transDict):
+    depProb
 
 # This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece. Best implemented as a 144 key dictionary.
 

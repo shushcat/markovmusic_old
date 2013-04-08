@@ -24,16 +24,30 @@ for piece in pieceList:
     noteFreqs = chainBuilder.noteFreqs(pitchList)
     totalNotes = chainBuilder.totalNotes(noteFreqs)
     indProbs = chainBuilder.indProbs(noteFreqs)
+#    depProbs = chainBuilder.depProb
 
     print '-'*64
     print pieceList[n]
     print '-'*64
 
+# Make a dictionary of (transitions  : occurrances).
+    transDict = {}
+    noteNum = 0
+    while noteNum < (totalNotes - 1):
+        thisThat = pitchList[noteNum] + pitchList[noteNum + 1]
+        nextNum = noteNum + 1
+        while nextNum < (totalNotes - 2):
+            if thisThat == pitchList[nextNum] + pitchList[nextNum + 1]:
+                transDict[thisThat] = transDict.get(thisThat, 0) + 1
+            nextNum = nextNum + 1
+        noteNum = noteNum + 1
+    print transDict
+    print '\n'
+
 #    noteNum = 0
 #    while noteNum < (totalNotes - 1):
-#        print str(pitchList[noteNum]) + ' is followed by ' + str(pitchList[noteNum + 1])
-#        noteNum = noteNum + 1
-    print '\n'
+
+
 #    print 'Frequency(occurrence) of each note:'
 #    print noteFreqs
 #    print '\n'
@@ -42,6 +56,6 @@ for piece in pieceList:
 #    print '\n'
 #    print 'Total notes in piece: ' + str(totalNotes)
 #    print '\n'
-    chainBuilder.thatThis(indProbs['A'], indProbs['B'])
+#    chainBuilder.thatThis(indProbs['A'], indProbs['B'])
 #    print chainBuilder.probNext('A')
-    n = n + 1
+#    n = n + 1
