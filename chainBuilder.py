@@ -1,6 +1,9 @@
 from __future__ import division
 # Gotta use regexes for this bit.
 import re
+# For working with matrices.
+import numpy
+from collections import Counter
 
 # Build 12 key dictionary with values for note occurances.
 def noteFreqs(pitchList):
@@ -30,9 +33,22 @@ def noteFreqs(pitchList):
             noteFreqs['G'] = noteFreqs.get('G', 0) + 1
         if re.search('G#\d', pitch) or re.search('C-\d', pitch):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
-        print noteFreqs
     return noteFreqs
 
+# Creates Markov chain as 1d array per-piece.
+def transFreqs(pitchList, totalNotes):
+    # Initial, unflattened transition dictionary.
+    transDict = {}
+    noteNum = 0
+    while noteNum < (totalNotes - 1):
+        thisThat = pitchList[noteNum] + pitchList[noteNum + 1]
+        nextNum = noteNum + 1
+        while nextNum < (totalNotes - 2):
+            if thisThat == pitchList[nextNum] + pitchList[nextNum + 1]:
+                transDict[thisThat] = transDict.get(thisThat, 0) + 1
+            nextNum = nextNum + 1
+        noteNum = noteNum + 1
+    return transDict
 
 # Total number of notes in a piece.
 def totalNotes(noteFreqs):
@@ -48,25 +64,16 @@ def indProbs(noteFreqs):
         indProbs[pitch] = freq / totalNotes(noteFreqs)
     return indProbs
 
-# Accepts two independent probabilities and returns probThat given probThis.
-def depProbs(nextNote, transDict):
-    depProbs = {}
-    probThatThis = transDict
-    print probThat
-    print probThis
 
-def probTrans(transDict):
+def transProbs(transDict):
     totalTrans = 0
     totalProb = 0
     for trans in transDict:
-        totalTrans = totalTrans + transDict[trans]
+        print trans
+#        totalTrans = totalTrans + transDict[trans]
 #        print totalTrans
-        totalProb = totalProb + transDict[trans]/totalTrans
-    print totalProb
+#        totalProb = totalProb + transDict[trans]/totalTrans
 
-
-def depProb(transDict):
-    depProb
 
 # This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece. Best implemented as a 144 key dictionary.
 
