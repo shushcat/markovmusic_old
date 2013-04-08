@@ -30,6 +30,7 @@ def noteFreqs(pitchList):
             noteFreqs['G'] = noteFreqs.get('G', 0) + 1
         if re.search('G#\d', pitch) or re.search('C-\d', pitch):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
+        print noteFreqs
     return noteFreqs
 
 
@@ -55,11 +56,11 @@ def depProbs(nextNote, transDict):
     print probThis
 
 def probTrans(transDict):
-    totalProb = 0
     totalTrans = 0
+    totalProb = 0
     for trans in transDict:
         totalTrans = totalTrans + transDict[trans]
-        print 'The transition ' + str(trans) + ' has a probability of ' + str(transDict[trans]/totalTrans)
+#        print totalTrans
         totalProb = totalProb + transDict[trans]/totalTrans
     print totalProb
 

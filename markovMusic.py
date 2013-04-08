@@ -44,10 +44,6 @@ for piece in pieceList:
     chainBuilder.probTrans(transDict)
     print '\n'
 
-#    noteNum = 0
-#    while noteNum < (totalNotes - 1):
-
-
 #    print 'Frequency(occurrence) of each note:'
 #    print noteFreqs
 #    print '\n'
