@@ -16,24 +16,33 @@ pieceList = ['supplementary corpora/WTK1.mid']
 Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is the script name itself and can be ignored This'll be needed it we get far enough along to allow calling the program on paths from the command line instead of hard-coding pieces.
 '''
 
+
 n = 0
 for piece in pieceList:
-    notes = corporaIO.pitchList(piece)
+
+    pitchList = corporaIO.pitchList(piece)
+    noteFreqs = chainBuilder.noteFreqs(pitchList)
+    totalNotes = chainBuilder.totalNotes(noteFreqs)
+    indProbs = chainBuilder.indProbs(noteFreqs)
+
     print '-'*64
     print pieceList[n]
     print '-'*64
-    noteNum = 0
-#    for note in notes:
-#        print str(note[noteNum]) + ' is followed by ' + str(note[noteNum + 1])
-    print 'Frequency(occurrence) of each note:'
-    print chainBuilder.noteFreqs(notes)
+
+#    noteNum = 0
+#    while noteNum < (totalNotes - 1):
+#        print str(pitchList[noteNum]) + ' is followed by ' + str(pitchList[noteNum + 1])
+#        noteNum = noteNum + 1
     print '\n'
-    print 'Independent probability of each note:'
-    print chainBuilder.noteProb(chainBuilder.noteFreqs(notes))
-    print '\n'
-    print 'Total notes in piece: ' + str(chainBuilder.totalNotes(chainBuilder.noteFreqs(notes)))
-    print '\n'
+
+#    print 'Frequency(occurrence) of each note:'
+#    print noteFreqs
+#    print '\n'
+#    print 'Independent probability of each note:'
+#    print indProbs
+#    print '\n'
+#    print 'Total notes in piece: ' + str(totalNotes)
+#    print '\n'
+    chainBuilder.thisThat(indProbs['A'], indProbs['B'])
+#    print chainBuilder.probNext('A')
     n = n + 1
-    print chainBuilder.totalNotes(chainBuilder.noteFreqs(notes))
-    for note in notes:
-        print note
