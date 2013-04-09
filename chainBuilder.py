@@ -1,9 +1,6 @@
 from __future__ import division
 # Gotta use regexes for this bit.
 import re
-# For working with matrices.
-import numpy
-from collections import Counter
 
 # Build 12 key dictionary with values for note occurances.
 def noteFreqs(pitchList):
@@ -67,26 +64,9 @@ def indProbs(noteFreqs):
         indProbs[pitch] = freq / totalNotes(noteFreqs)
     return indProbs
 
-# Dictionary of transition probabilities.
+# Dictionary of transition probabilities. Very small (< 0.002) value getting lost; fix later.
 def transProbs(transFreqs, totalTrans):
     transProbs = {}
     for trans, freq in transFreqs.items():
         transProbs[trans] = freq / totalTrans
     return transProbs
-
-    #transitions = numpy.arrange(1, 12)
-    #print transitions
-    totalTrans = 0
-    totalProb = 0
-#        totalTrans = totalTrans + transDict[trans]
-#        print totalTrans
-#        totalProb = totalProb + transDict[trans]/totalTrans
-
-'''
-Bayes' Theorem:
-    P(x|y) = P(x)P(y|x)/P(y)
-    To be used for generation of transition tables.
-
-    Translated:
-    P(next | preceding) = P(next)P(preceding | next)/P(preceding)
-'''
