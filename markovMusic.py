@@ -5,8 +5,8 @@ import sys
 import os
 
 # Modules in this directory
-import corporaIO 
-import chainBuilder
+from corporaIO import pitchList 
+from chainBuilder import *
 # import corpViz
 
 # Pieces to be processed; relative to . or corpus.
@@ -19,20 +19,22 @@ Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is t
 
 n = 0
 for piece in pieceList:
-
-    pitchList = corporaIO.pitchList(piece)
-    noteFreqs = chainBuilder.noteFreqs(pitchList)
-    totalNotes = chainBuilder.totalNotes(noteFreqs)
-    transFreqs = chainBuilder.transFreqs(pitchList, totalNotes)
-    indProbs = chainBuilder.indProbs(noteFreqs)
+    pitchList = pitchList(piece)
+    noteFreqs = noteFreqs(pitchList)
+    totalNotes = totalNotes(noteFreqs)
+    transFreqs = transFreqs(pitchList, totalNotes)
+    indProbs = indProbs(noteFreqs)
+    totalTrans = totalTrans(transFreqs)
+    transProbs = transProbs(transFreqs, totalNotes)
 
     print '-'*64
     print pieceList[n]
     print '-'*64
+    print '\n'
+    print transProbs
 
 # Make a dictionary of (transitions  : occurrances).
-    print transFreqs
-    chainBuilder.transProbs(transFreqs, totalNotes)
+    #print transProbs(transFreqs, totalTrans)
 
 #    print 'Frequency(occurrence) of each note:'
 #    print noteFreqs

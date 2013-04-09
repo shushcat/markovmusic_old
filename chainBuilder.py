@@ -35,6 +35,7 @@ def noteFreqs(pitchList):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
     return noteFreqs
 
+# There may be a problem here :-?
 # Frequencies of transitions, collapsed to single octave.
 def transFreqs(pitchList, totalNotes):
     transDict = {}
@@ -56,6 +57,13 @@ def totalNotes(noteFreqs):
         total = total + noteFreqs.get(freq)
     return total
 
+# Total transitions in a piece.
+def totalTrans(transFreqs):
+    total = 0
+    for trans in transFreqs:
+        total = total + transFreqs.get(trans)
+    return total
+
 # Independent p(note) per piece.
 def indProbs(noteFreqs):
     indProbs = {}
@@ -63,9 +71,13 @@ def indProbs(noteFreqs):
         indProbs[pitch] = freq / totalNotes(noteFreqs)
     return indProbs
 
+# Dictionary of transition probabilities.
+def transProbs(transFreqs, totalTrans):
+    transProbs = {}
+    for trans, freq in transFreqs.items():
+        transProbs[trans] = freq / totalTrans
+    return transProbs
 
-# Creates Markov chain as 1d array per-piece.
-def transProbs(transFreqs, totalNotes):
     #transitions = numpy.arrange(1, 12)
     #print transitions
     totalTrans = 0
@@ -74,9 +86,6 @@ def transProbs(transFreqs, totalNotes):
 #        print totalTrans
 #        totalProb = totalProb + transDict[trans]/totalTrans
 
-
-# This needs to return a 12x12 matrix of note frequencies; a transition table for the particular piece. Best implemented as a 144 key dictionary.
-
 '''
 Bayes' Theorem:
     P(x|y) = P(x)P(y|x)/P(y)
@@ -84,6 +93,4 @@ Bayes' Theorem:
 
     Translated:
     P(next | preceding) = P(next)P(preceding | next)/P(preceding)
-
-    Forward-backward algorithm is the way to go, really, but can be deferred for now since that would be overreaching current project scope.
 '''
