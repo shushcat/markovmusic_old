@@ -22,8 +22,8 @@ for piece in pieceList:
 
     pitchList = corporaIO.pitchList(piece)
     noteFreqs = chainBuilder.noteFreqs(pitchList)
-    transFreqs = chainBuilder.transFreqs
     totalNotes = chainBuilder.totalNotes(noteFreqs)
+    transFreqs = chainBuilder.transFreqs(pitchList, totalNotes)
     indProbs = chainBuilder.indProbs(noteFreqs)
 
     print '-'*64
@@ -31,8 +31,8 @@ for piece in pieceList:
     print '-'*64
 
 # Make a dictionary of (transitions  : occurrances).
-    pairs = transFreqs(pitchList, totalNotes)
-    print pairs
+    print transFreqs
+    chainBuilder.transProbs(transFreqs, totalNotes)
 
 #    print 'Frequency(occurrence) of each note:'
 #    print noteFreqs
@@ -44,4 +44,4 @@ for piece in pieceList:
 #    print '\n'
 #    chainBuilder.thatThis(indProbs['A'], indProbs['B'])
 #    print chainBuilder.probNext('A')
-#    n = n + 1
+    n = n + 1

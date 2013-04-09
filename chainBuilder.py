@@ -35,16 +35,15 @@ def noteFreqs(pitchList):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
     return noteFreqs
 
-# Creates Markov chain as 1d array per-piece.
+# Frequencies of transitions, collapsed to single octave.
 def transFreqs(pitchList, totalNotes):
-    # Initial, unflattened transition dictionary.
     transDict = {}
     noteNum = 0
     while noteNum < (totalNotes - 1):
-        thisThat = pitchList[noteNum] + pitchList[noteNum + 1]
+        thisThat = re.sub(r'(.+)(\d)(.+)(\d)', r'\1\3', pitchList[noteNum] + pitchList[noteNum + 1])
         nextNum = noteNum + 1
         while nextNum < (totalNotes - 2):
-            if thisThat == pitchList[nextNum] + pitchList[nextNum + 1]:
+            if re.search(thisThat, re.sub(r'(.+)(\d)(.+)(\d)', r'\1\3', pitchList[nextNum] + pitchList[nextNum + 1])):
                 transDict[thisThat] = transDict.get(thisThat, 0) + 1
             nextNum = nextNum + 1
         noteNum = noteNum + 1
@@ -65,11 +64,12 @@ def indProbs(noteFreqs):
     return indProbs
 
 
-def transProbs(transDict):
+# Creates Markov chain as 1d array per-piece.
+def transProbs(transFreqs, totalNotes):
+    #transitions = numpy.arrange(1, 12)
+    #print transitions
     totalTrans = 0
     totalProb = 0
-    for trans in transDict:
-        print trans
 #        totalTrans = totalTrans + transDict[trans]
 #        print totalTrans
 #        totalProb = totalProb + transDict[trans]/totalTrans
