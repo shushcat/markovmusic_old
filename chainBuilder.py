@@ -35,20 +35,15 @@ def noteFreqs(pitchList):
             noteFreqs['G#'] = noteFreqs.get('G#', 0) + 1
     return noteFreqs
 
-# There may be a problem here :-?
 # Frequencies of transitions, collapsed to single octave.
 def transFreqs(pitchList, totalNotes):
     transFreqs= {}
     noteNum = 0
-    nextNum = 1
     while (noteNum < (totalNotes - 1)):
-        chainLink = re.sub(r'(.+)(\d)(.+)(\d)', r'\1\3', pitchList[noteNum] + pitchList[nextNum])
-#        while nextNum < (totalNotes - 2):
-#            if re.search(indDep, re.sub(r'(.+)(\d)(.+)(\d)', r'\1\3', pitchList[nextNum] + pitchList[nextNum + 1])):
-#                transFreqs[indDep] = transFreqs.get(indDep, 0) + 1
-#            nextNum = nextNum + 1
+        nextNum = noteNum + 1
+        thisLink = re.sub(r'(.+)(\d)(.+)(\d)', r'\1\3', pitchList[noteNum] + pitchList[nextNum])
+        transFreqs[thisLink] = transFreqs.get(thisLink, 0) + 1
         noteNum = noteNum + 1
-        nextNum = nextNum + 1
     return transFreqs
 
 # Total number of notes in a piece.

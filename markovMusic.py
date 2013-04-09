@@ -30,21 +30,11 @@ for piece in pieceList:
 #    print '-'*64
 #    print pieceList[n]
 #    print '-'*64
-    print '\n'
-#    for pitch in pitchList:
-#        print pitch
+#    print '\n'
 
 # Make a dictionary of (transitions  : occurrances).
-    #print transProbs(transFreqs, totalTrans)
+    for prob in transProbs:
+        print transProbs[prob]
 
-#    print 'Frequency(occurrence) of each note:'
-#    print noteFreqs
-#    print '\n'
-#    print 'Independent probability of each note:'
-#    print indProbs
-#    print '\n'
-#    print 'Total notes in piece: ' + str(totalNotes)
-#    print '\n'
-#    chainBuilder.thatThis(indProbs['A'], indProbs['B'])
-#    print chainBuilder.probNext('A')
+    # Process the next piece!
     n = n + 1
