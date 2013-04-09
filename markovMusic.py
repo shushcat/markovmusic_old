@@ -13,7 +13,7 @@ from chainBuilder import *
 pieceList = ['supplementary corpora/WTK1.mid']
 
 '''
-Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is the script name itself and can be ignored This'll be needed it we get far enough along to allow calling the program on paths from the command line instead of hard-coding pieces.
+Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is the script name itself and can be ignored This'll be needed if we get far enough along to allow calling the program on paths from the command line instead of hard-coding pieces.
 '''
 
 
@@ -27,11 +27,12 @@ for piece in pieceList:
     totalTrans = totalTrans(transFreqs)
     transProbs = transProbs(transFreqs, totalNotes)
 
-    print '-'*64
-    print pieceList[n]
-    print '-'*64
+#    print '-'*64
+#    print pieceList[n]
+#    print '-'*64
     print '\n'
-    print transProbs
+#    for pitch in pitchList:
+#        print pitch
 
 # Make a dictionary of (transitions  : occurrances).
     #print transProbs(transFreqs, totalTrans)
