@@ -22,10 +22,13 @@ arrowHead = 'dot'
 #Spread nodes on page
 HEADER = "digraph  dependencies { layout=neato;   splines=true; overlap=scalexy;  rankdir=LR; weight=2;"
 
+# Number of links is proportional to clustering.
+
 #More information on setting up graphviz: http://www.graphviz.org/doc/info/attrs.html
 
 FOOTER = "}"
 
+# Make a list for input notes.
 validUuids = list()
 
 def call_dot(instr):
@@ -41,7 +44,7 @@ def corpora(pieces):
         if float(datum['attraction']) > maxAttraction:
             maxAttraction = float(datum['attraction'])
 
-    # first pass: labels
+    # First pass: labels
     lines = [HEADER]
     print ('Printing Labels')
     for datum in data:
@@ -131,4 +134,4 @@ def corpora(pieces):
     with open('/tmp/corpViz.gv', 'w') as f:
         f.write(gv)
 
-subprocess.call("open /tmp/corpViz.gv", shell = True)
+#subprocess.call("open /tmp/corpViz.gv", shell = True)

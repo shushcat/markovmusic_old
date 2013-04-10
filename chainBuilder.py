@@ -58,11 +58,11 @@ def totalTrans(transFreqs):
     return total
 
 # Independent p(note) per piece.
-def indProbs(noteFreqs):
-    indProbs = {}
+def noteProbs(noteFreqs):
+    noteProbs = {}
     for pitch, freq in noteFreqs.items():
-        indProbs[pitch] = freq / totalNotes(noteFreqs)
-    return indProbs
+        noteProbs[pitch] = freq / totalNotes(noteFreqs)
+    return noteProbs
 
 # Dictionary of transition probabilities. Very small (< 0.002) value getting lost; fix later.
 def transProbs(transFreqs, totalTrans):
