@@ -4,6 +4,7 @@
 import sys
 import os
 import math
+import re
 
 # Modules in this directory
 from corporaIO import getPitchList
@@ -17,13 +18,16 @@ pieceList = ['supplementary corpora/BachCelloSuiteP1.mid', 'supplementary corpor
 
 noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
-'''
-Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is the script name itself and can be ignored This'll be needed if we get far enough along to allow calling the program on paths from the command line instead of hard-coding pieces.
-
-Also need this knowledge for selectively calling corpViz methods.
-'''
-
-def getProbMat(noteProbs, transProbs):
+def getProbMat(piece):
+    thisPiece = piece
+    pitchList = getPitchList(thisPiece)
+    noteFreqs = getNoteFreqs(pitchList)
+    totalNotes = getTotalNotes(noteFreqs)
+    transFreqs = getTransFreqs(pitchList, totalNotes)
+    noteProbs = getNoteProbs(noteFreqs)
+    totalTrans = getTotalTrans(transFreqs)
+    transProbs = getTransProbs(transFreqs, totalNotes)
+#    probMat = getProbMat(noteProbs, transProbs)
     # Make matrix; populate with 0s
     probMat = [[[0]for i in xrange(12)] for j in xrange(12)]
     # Make column 1; base values.
@@ -72,45 +76,47 @@ def meanSquareError(probMat1, probMat2):
             print totDiff
             math.fabs(totDiff)
             meanSquareError = meanSquareError + (totDiff * totDiff)
+            j = j + 1
         i = i + 1
-        j = j + 1
         print meanSquareError
 
 # Run
+pieceNum = 0
 for piece in pieceList:
-    thisPiece = piece
-    pitchList = getPitchList(thisPiece)
-    noteFreqs = getNoteFreqs(pitchList)
-    totalNotes = getTotalNotes(noteFreqs)
-    transFreqs = getTransFreqs(pitchList, totalNotes)
-    noteProbs = getNoteProbs(noteFreqs)
-    totalTrans = getTotalTrans(transFreqs)
-    transProbs = getTransProbs(transFreqs, totalNotes)
-    probMat = getProbMat(noteProbs, transProbs)
-
- # Header for printed output 
+# Header for printed output 
     print '\n'
     print '-'*64
-    print piece
+    pieceID = re.sub(r'(.+)\/(.+)',r'\2', piece)
+    print pieceID
     print '-'*64
     print '\n'
+# Transition matrix for piece.
+    probMat1 = getProbMat(piece)
+    print probMat1
+    nextPieceNum = pieceNum + 1
+    for next in pieceList[nextPieceNum:]:
+        print '\n'
+        print '-'*64
+        nextID = re.sub(r'(.+)\/(.+)',r'\2', next)
+        print pieceID + ' to ' + nextID
+        print '-'*64
+        print '\n'
+        probMat2 = getProbMat(piece)
+        meanSquareError(probMat1, probMat2)
 
-    print probMat
-    
-
-#    print 'Transition probabilities:'
-#    print transProbs
-
-    #print sorted(transProbs.values())
+        print 'MATRIX?'
+        nextPieceNum = nextPieceNum + 1
+    pieceNum = pieceNum + 1
 
     #for prob in transProbs:
     #    print transProbs[prob]
 
     # Process the next piece!
 try: 
-    sys.argv[1] == 'graph'
-    print 'GRAPH CALLED'
+    if sys.argv[1] == 'graph':
+        print 'GRAPH CALLED'
+        #corpViz
+    elif sys.argv[1] == 'print':
+        print 'PRINT CALLED'
 except:
     sys.exit(0)
-
-    #corpViz
