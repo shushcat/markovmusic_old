@@ -5,7 +5,7 @@ import re
 'Returns a list of pitches when called on either a path to a valid file type or the name of a piece in the music21 corpus.'
 
 # Makes music21.stream.Score objects and converts them to lists of notes.
-def pitchList(piece):
+def getPitchList(piece):
     # Parses and flattens so notes can be linearly compared. Flattening precedence is: offset time, pitch (low to high?), classSortOrder (notes, accidentals, rests, etc., but not important here since we're just extracting all the notes anyway)
     try:
         added = converter.parseFile(piece)

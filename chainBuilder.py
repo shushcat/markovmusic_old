@@ -3,7 +3,7 @@ from __future__ import division
 import re
 
 # Build 12 key dictionary with values for note occurances.
-def noteFreqs(pitchList):
+def getNoteFreqs(pitchList):
     noteFreqs = {}
     for pitch in pitchList:
         if re.search('A\d', pitch) or re.search('A-\d', pitch):
@@ -33,7 +33,7 @@ def noteFreqs(pitchList):
     return noteFreqs
 
 # Frequencies of transitions, collapsed to single octave.
-def transFreqs(pitchList, totalNotes):
+def getTransFreqs(pitchList, totalNotes):
     transFreqs= {}
     noteNum = 0
     while (noteNum < (totalNotes - 1)):
@@ -44,28 +44,28 @@ def transFreqs(pitchList, totalNotes):
     return transFreqs
 
 # Total number of notes in a piece.
-def totalNotes(noteFreqs):
+def getTotalNotes(noteFreqs):
     total = 0
     for freq in noteFreqs:
         total = total + noteFreqs.get(freq)
     return total
 
 # Total transitions in a piece.
-def totalTrans(transFreqs):
+def getTotalTrans(transFreqs):
     total = 0
     for trans in transFreqs:
         total = total + transFreqs.get(trans)
     return total
 
 # Independent p(note) per piece.
-def noteProbs(noteFreqs):
+def getNoteProbs(noteFreqs):
     noteProbs = {}
     for pitch, freq in noteFreqs.items():
-        noteProbs[pitch] = freq / totalNotes(noteFreqs)
+        noteProbs[pitch] = freq / getTotalNotes(noteFreqs)
     return noteProbs
 
 # Dictionary of transition probabilities. Very small (< 0.002) value getting lost; fix later.
-def transProbs(transFreqs, totalTrans):
+def getTransProbs(transFreqs, totalTrans):
     transProbs = {}
     for trans, freq in transFreqs.items():
         transProbs[trans] = freq / totalTrans

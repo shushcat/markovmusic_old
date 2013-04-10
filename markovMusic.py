@@ -6,12 +6,16 @@ import os
 import math
 
 # Modules in this directory
-from corporaIO import pitchList 
+from corporaIO import getPitchList
 from chainBuilder import *
 import corpViz
 
 # Pieces to be processed; relative to . or corpus
-pieceList = ['supplementary corpora/WTK1.mid']
+# Change to read from file with one filename per line
+pieceList = ['supplementary corpora/BachCelloSuiteP1.mid', 'supplementary corpora/BachCelloSuiteP5.mid', 'supplementary corpora/Battle_Hymn_Of_The_Republic_5.mid', 'supplementary corpora/ShuleaAgra.mid', 'supplementary corpora/WTK1.mid', 'supplementary corpora/WTK6.mid', 'supplementary corpora/amazinggrace.mid', 'supplementary corpora/americathebeautiful.mid', 'supplementary corpora/anorthco.mid', 'supplementary corpora/dabblinginthedew.mid', 'supplementary corpora/myboy.mid', 'supplementary corpora/thenoblemanswedding.mid']
+
+
+noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
 '''
 Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is the script name itself and can be ignored This'll be needed if we get far enough along to allow calling the program on paths from the command line instead of hard-coding pieces.
@@ -19,66 +23,79 @@ Remember! Command line args are in sys.argv[1], sys.argv[2] ... sys.argv[0] is t
 Also need this knowledge for selectively calling corpViz methods.
 '''
 
-def genMat(noteProbs, transProbs):
-    # Make column 1.
-    # Sort by prob, high to low (but return keys too!). This is truncating the list to 8
-# For matrices [A, A# B, C, C#, D, D#, E, F, F#, G, G#] -> [1,2,3,4,5,6,7,8,9,10,11,12]
-    index = 0
-    probMat = [[] for i in xrange(12)]
-    print noteProbs
-    sortedNotes = sorted(noteProbs.keys())
-    print sortedNotes
-    # Send noteProbs to index 1 of each matrix
-    # Need to map addresses by pitch.
-    # ij to populate matrix
-    for item in sortedNotes:
-        if index == 12:
-            break
-        probMat[index].append(item)
-        index = index + 1
+def getProbMat(noteProbs, transProbs):
+    # Make matrix; populate with 0s
+    probMat = [[[0]for i in xrange(12)] for j in xrange(12)]
+    # Make column 1; base values.
+    for note, prob in noteProbs.items():
+        i = 0
+        while i < 12:
+            if noteNames[i] == note:
+                probMat[i][0] = prob
+            i = i + 1
+    # Populate matrix with transition probabilities
+    for trans, prob in transProbs.items():
+        i = 0
+        while i < 12:
+            j = 0
+            try:
+                match = re.search(r'^.\#', trans).group()
+                if noteNames[i] == match:
+                    probMat[i][j] = prob
+            except: 
+                match = re.search(r'^.', trans).group() 
+                if noteNames[i] == match:
+                    probMat[i][j] = prob
+            while j < 12:
+                try:
+                    match = re.search(r'.\#$', trans).group()
+                    if noteNames[i] == match:
+                        probMat[i][j] = prob
+                except: 
+                    match = re.search(r'.$', trans).group() 
+                    if noteNames[i] == match:
+                        probMat[i][j] = prob
+                j = j + 1
+            i = i + 1
     return probMat
 
-# Accepts two probability matrices and returns a difference matrix.
+# Accepts two probability matrices and returns a 'difference matrix'.
 def meanSquareError(probMat1, probMat2):
-    probMat1 = [[3,5,6,2], [4,5,2,3]]
-    probMat2 = [ [7,4,2,6], [3,5,6,7] ]
-    mse=0
-    row=0
-    while row<2:
-        print row
-        col=0
-        print 
-        while col<4:
-            difference = matrix1 [row][col] - matrix2 [row][col]
-            print difference
-            math.fabs(difference)
-            mse = mse + (difference * difference)
-        col=col+1
-        row=row+1
-        print mse
+    meanSquareError = 0
+    i = 0
+    while i < 2:
+        print i
+        j = 0
+        print j
+        while j < 4:
+            totDiff = probMat1[i][j] - probMat2[i][j]
+            print totDiff
+            math.fabs(totDiff)
+            meanSquareError = meanSquareError + (totDiff * totDiff)
+        i = i + 1
+        j = j + 1
+        print meanSquareError
 
 # Run
-n = 0
 for piece in pieceList:
-    pitchList = pitchList(piece)
-    noteFreqs = noteFreqs(pitchList)
-    totalNotes = totalNotes(noteFreqs)
-    transFreqs = transFreqs(pitchList, totalNotes)
-    noteProbs = noteProbs(noteFreqs)
-    totalTrans = totalTrans(transFreqs)
-    transProbs = transProbs(transFreqs, totalNotes)
-    genMat = genMat(noteProbs, transProbs)
+    thisPiece = piece
+    pitchList = getPitchList(thisPiece)
+    noteFreqs = getNoteFreqs(pitchList)
+    totalNotes = getTotalNotes(noteFreqs)
+    transFreqs = getTransFreqs(pitchList, totalNotes)
+    noteProbs = getNoteProbs(noteFreqs)
+    totalTrans = getTotalTrans(transFreqs)
+    transProbs = getTransProbs(transFreqs, totalNotes)
+    probMat = getProbMat(noteProbs, transProbs)
 
- # Header for piece-processing
+ # Header for printed output 
+    print '\n'
     print '-'*64
     print piece
     print '-'*64
     print '\n'
-    print noteProbs
 
-    genMat
-    print 'Transition matrix.'
-    print genMat
+    print probMat
     
 
 #    print 'Transition probabilities:'
@@ -90,7 +107,6 @@ for piece in pieceList:
     #    print transProbs[prob]
 
     # Process the next piece!
-    n = n + 1
 try: 
     sys.argv[1] == 'graph'
     print 'GRAPH CALLED'
