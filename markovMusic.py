@@ -29,7 +29,7 @@ def getProbMat(piece):
     transProbs = getTransProbs(transFreqs, totalNotes)
 #    probMat = getProbMat(noteProbs, transProbs)
     # Make matrix; populate with 0s
-    probMat = [[[0]for i in xrange(12)] for j in xrange(12)]
+    probMat = [[0 for i in xrange(12)] for j in xrange(12)]
     # Make column 1; base values.
     for note, prob in noteProbs.items():
         i = 0
@@ -63,22 +63,21 @@ def getProbMat(piece):
             i = i + 1
     return probMat
 
-# Accepts two probability matrices and returns a 'difference matrix'.
+# Accepts two probability matrices and returns their mean square error.
 def meanSquareError(probMat1, probMat2):
     meanSquareError = 0
     i = 0
-    while i < 2:
-        print i
+    while i < 12:
         j = 0
-        print j
-        while j < 4:
-            totDiff = probMat1[i][j] - probMat2[i][j]
-            print totDiff
-            math.fabs(totDiff)
+        totDiff = 0
+        while j < 12:
+            addrIn1 = probMat1[i][j]  
+            addrIn2 = probMat2[i][j]
+            totDiff =  math.fabs(addrIn1 - addrIn2)
             meanSquareError = meanSquareError + (totDiff * totDiff)
             j = j + 1
         i = i + 1
-        print meanSquareError
+        return meanSquareError
 
 # Run
 pieceNum = 0
@@ -92,7 +91,7 @@ for piece in pieceList:
     print '\n'
 # Transition matrix for piece.
     probMat1 = getProbMat(piece)
-    print probMat1
+#    print probMat1
     nextPieceNum = pieceNum + 1
     for next in pieceList[nextPieceNum:]:
         print '\n'
@@ -101,17 +100,12 @@ for piece in pieceList:
         print pieceID + ' to ' + nextID
         print '-'*64
         print '\n'
-        probMat2 = getProbMat(piece)
-        meanSquareError(probMat1, probMat2)
+        probMat2 = getProbMat(next)
+        print 'MSE' + str(meanSquareError(probMat1, probMat2))
 
-        print 'MATRIX?'
         nextPieceNum = nextPieceNum + 1
     pieceNum = pieceNum + 1
 
-    #for prob in transProbs:
-    #    print transProbs[prob]
-
-    # Process the next piece!
 try: 
     if sys.argv[1] == 'graph':
         print 'GRAPH CALLED'
