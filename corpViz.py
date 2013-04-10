@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-'Weighted graph of processed corpora via GraphViz.'
+'Weighted graph of precessed corpora via GraphViz.'
 from subprocess import Popen, PIPE
 import subprocess
 import sys
 import textwrap
+import re
 
-# Wrap node label text at this number of characters
+# Set of regexes for parsing the results file
+
 charsPerLine = 20;
 
-# Color defs; figure these out later.
-# full list of colors here: http://www.graphviz.org/doc/info/colors.html
 aColor = 'red2'
 anotherColor = 'green';
 
@@ -22,33 +22,35 @@ arrowHead = 'dot'
 #Spread nodes on page
 HEADER = "digraph  dependencies { layout=neato;   splines=true; overlap=scalexy;  rankdir=LR; weight=2;"
 
-# Number of links is proportional to clustering.
-
 #More information on setting up graphviz: http://www.graphviz.org/doc/info/attrs.html
 
 FOOTER = "}"
 
-# Make a list for input notes.
-validUuids = list()
+pieceIDs = list()
 
 def call_dot(instr):
     'call dot, returning stdout and stdout'
     dot = Popen('dot -Tgv'.split(), stdout=PIPE, stderr=PIPE, stdin=PIPE)
     return dot.communicate(instr)
 
-def corpora(pieces):
+# Run
+if __name__ == '__main__':
+    data = open('out.txt', 'rU')
+    query = sys.argv[1:]
+    print 'Building graph...'
 
     #print data
-    maxAttraction= -9999;
-    for datum in data:
-        if float(datum['attraction']) > maxAttraction:
-            maxAttraction = float(datum['attraction'])
+#    maxAttraction= -9999;
+#    for datum in data:
+#        if float(datum['attraction']) > maxAttraction:
+#            maxAttraction = float(datum['attraction'])
 
     # First pass: labels
     lines = [HEADER]
     print ('Printing Labels')
     for datum in data:
-        validUuids.append(datum['uuid'])
+        pieceIDs.append(datum['uuid'])
+
         if datum['description']:
 
             style = ''

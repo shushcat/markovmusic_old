@@ -9,7 +9,6 @@ import re
 # Modules in this directory
 from corporaIO import getPitchList
 from chainBuilder import *
-import corpViz
 
 # Pieces to be processed; relative to . or corpus
 # Change to read from file with one filename per line
@@ -82,16 +81,16 @@ def meanSquareError(probMat1, probMat2):
 # Run
 pieceNum = 0
 for piece in pieceList:
-# Header for printed output 
+    probMat1 = getProbMat(piece)
+    # Header for printed output 
     print '\n'
     print '-'*64
     pieceID = re.sub(r'(.+)\/(.+)',r'\2', piece)
     print pieceID
     print '-'*64
     print '\n'
-# Transition matrix for piece.
-    probMat1 = getProbMat(piece)
-#    print probMat1
+    # Transition matrix for piece
+    print probMat1
     nextPieceNum = pieceNum + 1
     for next in pieceList[nextPieceNum:]:
         print '\n'
@@ -101,16 +100,10 @@ for piece in pieceList:
         print '-'*64
         print '\n'
         probMat2 = getProbMat(next)
-        print 'MSE' + str(meanSquareError(probMat1, probMat2))
+        # Transition matrices for subsequent pieces
+        print probMat2
+
+        print 'MSE: ' + str(meanSquareError(probMat1, probMat2))
 
         nextPieceNum = nextPieceNum + 1
     pieceNum = pieceNum + 1
-
-try: 
-    if sys.argv[1] == 'graph':
-        print 'GRAPH CALLED'
-        #corpViz
-    elif sys.argv[1] == 'print':
-        print 'PRINT CALLED'
-except:
-    sys.exit(0)
