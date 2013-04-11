@@ -31,9 +31,12 @@ if __name__ == '__main__':
             parsed = re.sub(r'(.+)(.mid) to (.+)(.mid)', r'\1 -> \3', line).rstrip()
             piecesAndLinks.append(parsed)
         elif re.search(r'(MSE: )(.+)', line):
-            parsed = (float(re.sub(r'(MSE: )(.+)', r'\2', line).rstrip()) * 100)
+            if re.search(r'.+e.+', line):
+                parsed = 1
+            else:
+                parsed = (float(re.sub(r'(MSE: )(.+)', r'\2', line).rstrip()))
             mSEs.append(parsed)
-        print mSEs
+            print mSEs
 
     for trans in piecesAndLinks:
         # linking proportional to MSE?
