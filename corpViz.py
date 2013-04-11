@@ -13,7 +13,7 @@ penWidth = 1
 arrowHead = 'dot'
 style = 'filled'
 
-pieceLinks = []
+piecesAndLinks = []
 mSEs = []
 graphOut = [HEADER]
 
@@ -29,24 +29,18 @@ if __name__ == '__main__':
     for line in input:
         if re.search(r'(.+.mid) to (.+.mid)', line):
             parsed = re.sub(r'(.+)(.mid) to (.+)(.mid)', r'\1 -> \3', line).rstrip()
-            pieceLinks.append(parsed)
+            piecesAndLinks.append(parsed)
         elif re.search(r'(MSE: )(.+)', line):
-            parsed= re.sub(r'(MSE: )(.+)', r'\2', line).rstrip()
+            parsed = (float(re.sub(r'(MSE: )(.+)', r'\2', line).rstrip()) * 100)
             mSEs.append(parsed)
+        print mSEs
 
-
-
-#    print ('Making Piece-Boxes')
-#    for id in pieceIDs:
-#        graphOut.append(id + ('[shape=box][penwidth=%d][fillcolor=%s][style=%s]' % (penWidth, color, style)))
-#        continue
-
-    for trans in pieceLinks:
+    for trans in piecesAndLinks:
         # linking proportional to MSE?
-        graphOut.append(trans + ('[shape=box][penwidth=%d][fillcolor=%s][style=%s]' % (penWidth, color, style)))
-        continue
+#        graphOut.append(trans + ('[dir=none][shape=box][penwidth=%d][fillcolor=%s][style=%s][weight=%d]' % (penWidth, color, 'invis', mSEs[piecesAndLinks.index(trans)])))
+        graphOut.append(trans + ('[dir=none][shape=box][penwidth=%d][fillcolor=%s][len=%g]' % (penWidth, color, mSEs[piecesAndLinks.index(trans)])))
 
-    # third pass: tags
+    # potentially append genre information
 #    print ('Making and Linking Tag Nodes')
 #    for datum in data:
 #        for tag in datum.get('tags',''):
