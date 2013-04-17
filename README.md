@@ -1,7 +1,7 @@
 # Markov Music
 
 ###TODO
-[ ] John: Edit paper as it currently stands.
+[x] John: Edit paper as it currently stands.
 
 [ ] John: Setup local or remote(possible?) .gitignore?
 
