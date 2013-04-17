@@ -1,6 +1,10 @@
 # Markov Music
 
 ###TODO
-[] Fix the problem Brendan noticed; this may be related to the erroneous matrices Wolfgang noticed.
+[ ] John: Edit paper as it currently stands.
 
-[] Allow specification of corpora from the command line.
+[ ] John: Setup local or remote(possible?) .gitignore?
+
+[ ] Fix the problem Brendan noticed; this may be related to the erroneous matrices Wolfgang noticed.
+
+[ ] Allow specification of corpora from the command line.
