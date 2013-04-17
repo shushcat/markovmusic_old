@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}     % Defines character encoding of input txt.
+\usepackage[T1]{fontenc}            % Defines font encoding to use.
+\usepackage{kpfonts}            % Beautiful fonts.
+\usepackage{geometry}           % See geometry.pdf to learn the layout options. 
+\geometry{letterpaper}          % ... or a4paper or a5paper or ... 
+\usepackage{setspace}           % For controlling line spacing in the document.
+\usepackage{amsmath}            % Extra math environments. Possibly unneeded.
+\usepackage{amssymb}            % Some mathy symbols.
+ \usepackage{titling}               % Allows fancyhdr to reference \thetitle. 
+ \usepackage{fancyhdr}          % Lets me put the page count in the footer.
+ \headheight = 14.49998pt           % Sets header to appropriate height.
+ \pagestyle{fancy}              % Sets style for non-\maketitle pages.
+ \lhead[]{} \chead[]{Musical Markov} \rhead[]{Brickley and Olsson}
+ \lfoot[]{} \cfoot[]{\thepage\ of \pageref{LastPage}} \rfoot[]{}
+ \usepackage{lastpage}          % Allows reference of last page number.
+ \usepackage{hyperref}          % Allows links in the document.
+ \usepackage[numbers]{natbib}               % Makes citations nonbad.
+ %
+ %
+ \title{A Markov Model for Analysis of Musical Genre}
+ \author{John O. Brickley and Wolfgang Q. Olsson}
+ \date{24 March 2013}
+
+ \begin{document}
+ \maketitle
+
+ % Sections
+
+ \input{sections/abstract.tex}
+ 
+ \input{sections/introbackground.tex}
+
+ \input{sections/methodology.tex}
+
+ \input{sections/results.tex}
+
+ \input{sections/analysis.tex}
+
+ \input{sections/discussion.tex}
+
+ \singlespace
+ \bibliographystyle{unsrtnat}
+ \bibliography{sections/bibliography}
+
+ \end{document}  

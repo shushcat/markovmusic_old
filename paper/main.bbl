@@ -1,0 +1,28 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Russell and Norvig(2009)]{Russell2009AIMA}
+Stuart Russell and Peter Norvig.
+\newblock \emph{Artificial Intelligence: A Modern Approach}.
+\newblock Prentice Hall, 3rd edition, 2009.
+
+\bibitem[Poliner and Ellis(2005)]{Poliner2005CAMT}
+Graham~E Poliner and Daniel~PW Ellis.
+\newblock A classification approach to melody transcription.
+\newblock In \emph{ISMIR 2005: 6th International Conference on Music
+  Information Retrieval: Proceedings: Variation 2: Queen Mary, University of
+  London \& Goldsmiths College, University of London, 11-15 September, 2005},
+  pages 161--166. Queen Mary, University of London, 2005.
+
+\bibitem[Metze et~al.(Sept.)Metze, Polzehl, and Wagner]{Metze2013FALFED}
+F.~Metze, T.~Polzehl, and M.~Wagner.
+\newblock Fusion of acoustic and linguistic features for emotion detection.
+\newblock In \emph{Semantic Computing, 2009. ICSC '09. IEEE International
+  Conference on}, pages 153--160, Sept.
+\newblock \doi{10.1109/ICSC.2009.32}.
+
+\end{thebibliography}
