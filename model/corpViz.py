@@ -24,7 +24,7 @@ def call_dot(instr):
 # Run
 if __name__ == '__main__':
     # Parse data into lists
-    input = open('out.txt', 'rU')
+    input = open('testout.txt', 'rU')
     for line in input:
         if re.search(r'(.+.mid) to (.+.mid)', line):
             parsed = re.sub(r'(.+)(.mid) to (.+)(.mid)', r'\1 -> \3', line).rstrip()

@@ -30,37 +30,22 @@ def getProbMat(piece):
 #    probMat = getProbMat(noteProbs, transProbs)
     # Make matrix; populate with 0s
     probMat = [[0 for i in xrange(12)] for j in xrange(12)]
-    # Make column 1; base values.
-    for note, prob in noteProbs.items():
-        i = 0
-        while i < 12:
-            if noteNames[i] == note:
-                probMat[i][0] = prob
-            i = i + 1
-    # Populate matrix with transition probabilities
-    for trans, prob in transProbs.items():
-        i = 0
-        while i < 12:
-            j = 0
-            try:
-                match = re.search(r'^.\#', trans).group()
-                if noteNames[i] == match:
-                    probMat[i][j] = prob
-            except: 
-                match = re.search(r'^.', trans).group() 
-                if noteNames[i] == match:
-                    probMat[i][j] = prob
-            while j < 12:
-                try:
-                    match = re.search(r'.\#$', trans).group()
-                    if noteNames[i] == match:
-                        probMat[i][j] = prob
-                except: 
-                    match = re.search(r'.$', trans).group() 
-                    if noteNames[i] == match:
-                        probMat[i][j] = prob
-                j = j + 1
-            i = i + 1
+    
+    print transProbs
+    i = 0
+    while i < 12:
+        j = 0
+        while j < 12:
+       	    a = noteNames[i]
+       	    b = noteNames[j]
+       	    try:
+       	        c = transProbs[a + b]
+       	        probMat[i][j] = c
+       	    except:
+       	        probMat[i][j] = 0      	 
+            j = j + 1
+        i = i + 1
+    print probMat
     return probMat
 
 # Accepts two probability matrices and returns their mean square error.
