@@ -10,7 +10,6 @@ FOOTER = "}"
 
 color = 'grey'
 penWidth = 1
-arrowHead = 'dot'
 style = 'filled'
 
 piecesAndLinks = []

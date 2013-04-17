@@ -15,6 +15,7 @@ from chainBuilder import *
 pieceList = ['supplementary corpora/BachCelloSuiteP1.mid', 'supplementary corpora/BachCelloSuiteP5.mid', 'supplementary corpora/Battle_Hymn_Of_The_Republic_5.mid', 'supplementary corpora/ShuleaAgra.mid', 'supplementary corpora/WTK1.mid', 'supplementary corpora/WTK6.mid', 'supplementary corpora/amazinggrace.mid', 'supplementary corpora/americathebeautiful.mid', 'supplementary corpora/anorthco.mid', 'supplementary corpora/dabblinginthedew.mid', 'supplementary corpora/myboy.mid', 'supplementary corpora/thenoblemanswedding.mid']
 
 
+# Potentially shift these so that set starts with C
 noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
 def getProbMat(piece):

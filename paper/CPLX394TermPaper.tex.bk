@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}     % Defines character encoding of input txt.
+\usepackage[T1]{fontenc}            % Defines font encoding to use.
+\usepackage{kpfonts}            % Beautiful fonts.
+\usepackage{geometry}           % See geometry.pdf to learn the layout options. 
+\geometry{letterpaper}          % ... or a4paper or a5paper or ... 
+\usepackage{setspace}           % For controlling line spacing in the document.
+\usepackage{amsmath}            % Extra math environments. Possibly unneeded.
+\usepackage{amssymb}            % Some mathy symbols.
+ \usepackage{titling}               % Allows fancyhdr to reference \thetitle. 
+ \usepackage{fancyhdr}          % Lets me put the page count in the footer.
+ \headheight = 14.49998pt           % Sets header to appropriate height.
+ \pagestyle{fancy}              % Sets style for non-\maketitle pages.
+ \lhead[]{} \chead[]{Working Title} \rhead[]{Brickley and Olsson}
+ \lfoot[]{} \cfoot[]{\thepage\ of \pageref{LastPage}} \rfoot[]{}
+ \usepackage{lastpage}          % Allows reference of last page number.
+ \usepackage{hyperref}          % Allows links in the document.
+ \usepackage[numbers]{natbib}               % Makes citations nonbad.
+ %
+ %
+ \title{A Markov Model for Prediction and Analysis of Similarities and Differences in Genre, Style, and Tone in European Versus American Music}
+ \author{John O. Brickley and Wolfgang Q. Olsson}
+ \date{26 February 2012}
+ %
+ %
+ \begin{document}
+ \maketitle
+ \doublespace
+ %
+ \section{Hypothesis}
+ \emph{We hypothesize that, by modeling the inter-relation and similarities between measures of music across a large spectrum of genre and style, we may find both expected and unexpected emergent behavior from the aggregated output of the model, such as: specific connections between musics of different cultures based on a Markov “probabilistic syntax”, a high probability of certain tonal cadences regardless of genre, and a definition of “style” for musics of similar genres, and the pieces of similar composers, or works within a composers oeuvre.}
+ \section{Abstract}
+First, a simplified and abstracted collection of short, comparable selections from musical pieces from the Western Art Music canon, American Folk Music, American Gospel Music, American Jazz music, and Irish, Scottish, and English Folk Music shall be collected. Then, through an analytical “learning” computer, the similarities and differences will be weighed and measured, to deduce a detailed and probabilistically-weighted “map” of musical inter-related-ness. Finally, the model's Markov Process based output will then be used to test works outside the input set, of varying levels of closeness to the focus of the learned map, to determine an objective definition for their respective genre, style, and general similarities.
+ \section{Introduction}
+ This problem is important, because there is not a systematic or specific definition of genre or style available for musicologists. While music theorists have designated certain chord progressions as fundamental or common throughout the ages, but without any evidence-driven proof. That being said, there have been many statistical approaches in music of defining which chord progressions are most common in certain corpora, like many linguistic models. What our research offers is, more specifically, an approach that may analyze the subtle differences in a probabilistic grammar of chord progressions that might yield interesting and novel results concerning the similarities and differences between different styles and genres.
+
+\subsection{Terminology}
+	\indent First, we must define a few important key terms. First of all, the term music in the context of this paper refers simply to all of the information contained in a given piece, or work. Second, the term genre and style is defined as the presently un-defined characteristics common to much of a specific subset of music. More specifically, genre refers to characteristics within a cultural or temporal domain, such as “Classical”, “Romantic”, “Folk”, or “Jazz”. Style refers to characteristics of any collection, and is thus more of a general term. This is often used for individual composers or songwriters, but also can be used for cultures and time periods.
+	\indent The term interval describes simply the distance between pitches. Chords, for the purpose of this article, refer to collections of two or more intervals that have a subjective, stimulative effect on the human mind. Chords are most often split into major and minor tonalities. Major tonalities describe chords whose defining interval is a major third––measured as either two major scale degrees, four semitones, or a frequency ratio of about 9:8. Minor tonalities describe chords whose defining interval is a minor third–– measured as either two scale degrees of a minor scale, three semitones, or a frequency ratio of about 10:9. Chords are most commonly organized by tonality, the relative scale degree of the root (pitch at which the chord starts), and any other intervals that define the chord. Finally, a scale is any set of musical notes ordered by fundamental frequency or pitch––most often 8 notes.
+	\indent Finally, a variety of subjective terms are used which in common usage are ambiguous but in a technical sense are not. Tone, for example, does not refer to pitch, but rather the quality of the sound. Also, the word form refers specifically to the structure of a given piece within the constraints of genre, and most often a pre-determined forms––examples include sonata form, symphony, ballad, hymn, etc. Song refers to any work that is sung––not to be confused with piece or work. Measure refers to the division of beats based on grouping––for example, the majority of pieces are grouped in 4 notes, and are thus given a measure of 4/4. Dynamics refer to the relative loudness or softness of the notes.
+	\indent Now, the focus of the model is to examine an input corpora (excerpts from various works) and generate a syntactic definition of some “musical grammar” (A term which, like genre, is undefined because that is what we are trying to find). More specifically, this grammar is in the format of a Markov transition matrix: a table of percentage likelihoods for certain chords to follow the given chord.
+	\indent But how exactly will this be done? What measurements will be used to define the separate states? The computer model first splits the given piece into n number of measures, which constitute the search space to find the Markov transition matrices. Then, some key simplifications are made. First of all, since most of the pieces are first imported in .midi file format, the variables of note velocity (non- technical term for dynamics) are all given the value of 60/120. Second, the notes are quantized (a .midi description for aligning the notes exactly on the beat divisions within the measure). Third, all the notes are placed at the beginning of the measure, to create a definition for the chord the measure defines. 	\indent Sometimes, however, the chord is implicit, or there is a great deal of extraneous information involved in the music of the measure, such as melody and various other complications that do not distract the human ear from the main chord of the measure, but distract the parser from the chord. Therefore, we remove this extra detail and define a basic chord for the measure.
+
+\section{Corpora}
+
+
+ %
+ \singlespace
+ \bibliographystyle{unsrtnat}
+ \bibliography{./CPLX394TermPaperBibliography.bib}
+ \end{document}  
+
+
