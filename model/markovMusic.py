@@ -10,14 +10,20 @@ import re
 from corporaIO import getPitchList
 from chainBuilder import *
 
-# Pieces to be processed; relative to . or corpus
-# Change to read from file with one filename per line
-pieceList = ['supplementary corpora/BachCelloSuiteP1.mid', 'supplementary corpora/BachCelloSuiteP5.mid', 'supplementary corpora/Battle_Hymn_Of_The_Republic_5.mid', 'supplementary corpora/ShuleaAgra.mid', 'supplementary corpora/WTK1.mid', 'supplementary corpora/WTK6.mid', 'supplementary corpora/amazinggrace.mid', 'supplementary corpora/americathebeautiful.mid', 'supplementary corpora/anorthco.mid', 'supplementary corpora/dabblinginthedew.mid', 'supplementary corpora/myboy.mid', 'supplementary corpora/thenoblemanswedding.mid']
+# Setting up pieces for processing
+pieceList = []
+def getPieceList(fileName):
+    input = open(fileName, 'rU')
+    for line in input:
+        if not re.search(r'^#', line) and line.rstrip() != '':
+            pieceList.append(line.rstrip())
+    return pieceList
 
-
-# Potentially shift these so that set starts with C
+# Note dictionary
 noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+# Add list or dictionary mapping possible transitions to intervals.
 
+# Builds a transition probability matrix for a given piece
 def getProbMat(piece):
     thisPiece = piece
     pitchList = getPitchList(thisPiece)
@@ -30,37 +36,20 @@ def getProbMat(piece):
 #    probMat = getProbMat(noteProbs, transProbs)
     # Make matrix; populate with 0s
     probMat = [[0 for i in xrange(12)] for j in xrange(12)]
-    # Make column 1; base values.
-    for note, prob in noteProbs.items():
-        i = 0
-        while i < 12:
-            if noteNames[i] == note:
-                probMat[i][0] = prob
-            i = i + 1
-    # Populate matrix with transition probabilities
-    for trans, prob in transProbs.items():
-        i = 0
-        while i < 12:
-            j = 0
-            try:
-                match = re.search(r'^.\#', trans).group()
-                if noteNames[i] == match:
-                    probMat[i][j] = prob
-            except: 
-                match = re.search(r'^.', trans).group() 
-                if noteNames[i] == match:
-                    probMat[i][j] = prob
-            while j < 12:
-                try:
-                    match = re.search(r'.\#$', trans).group()
-                    if noteNames[i] == match:
-                        probMat[i][j] = prob
-                except: 
-                    match = re.search(r'.$', trans).group() 
-                    if noteNames[i] == match:
-                        probMat[i][j] = prob
-                j = j + 1
-            i = i + 1
+    # Populate matrix with probabilities
+    i = 0
+    while i < 12:
+        j = 0
+        while j < 12:
+       	    a = noteNames[i]
+       	    b = noteNames[j]
+       	    try:
+       	        c = transProbs[a + b]
+       	        probMat[i][j] = c
+       	    except:
+       	        probMat[i][j] = 0      	 
+            j = j + 1
+        i = i + 1
     return probMat
 
 # Accepts two probability matrices and returns their mean square error.
@@ -80,31 +69,32 @@ def meanSquareError(probMat1, probMat2):
         return meanSquareError
 
 # Run
-pieceNum = 0
-for piece in pieceList:
-    probMat1 = getProbMat(piece)
-    # Header for printed output 
-    print '\n'
-    print '-'*64
-    pieceID = re.sub(r'(.+)\/(.+)',r'\2', piece)
-    print pieceID
-    print '-'*64
-    print '\n'
-    # Transition matrix for piece
-    print probMat1
-    nextPieceNum = pieceNum + 1
-    for next in pieceList[nextPieceNum:]:
+if __name__ == '__main__':
+    # Load pieces from pieceList.txt
+    pieceList = getPieceList(sys.argv[1])
+    print pieceList
+    for piece in pieceList:
+        pieceNum = pieceList.index(piece)
+        probMat1 = getProbMat(piece)
+        # Header
         print '\n'
         print '-'*64
-        nextID = re.sub(r'(.+)\/(.+)',r'\2', next)
-        print pieceID + ' to ' + nextID
+        pieceID = re.sub(r'(.+)\/(.+)',r'\2', piece)
+        print pieceID
         print '-'*64
         print '\n'
-        probMat2 = getProbMat(next)
-        # Transition matrices for subsequent pieces
-        print probMat2
-
-        print 'MSE: ' + str(meanSquareError(probMat1, probMat2))
-
-        nextPieceNum = nextPieceNum + 1
-    pieceNum = pieceNum + 1
+        # Base probMat
+        print probMat1
+        nextPieceNum = pieceNum + 1
+        for next in pieceList[nextPieceNum:]:
+            # Sub-header
+            print '\n'
+            print '-'*64
+            nextID = re.sub(r'(.+)\/(.+)',r'\2', next)
+            print pieceID + ' to ' + nextID
+            print '-'*64
+            print '\n'
+            # Comparison probMat
+            probMat2 = getProbMat(next)
+            # Mean square error
+            print 'MSE: ' + str(meanSquareError(probMat1, probMat2))
