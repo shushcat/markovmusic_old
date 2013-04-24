@@ -22,11 +22,8 @@ graphOut = [HEADER]
 # Parse data into lists
 piecesAndLinks = []
 def getPiecesAndLinks(flag):
-    if flag == '':
-        print "No data provided."
-        sys.exit()
-    elif flag == '-':
-        input = readLines(sys.stdin())
+    if flag == '-':
+        input = sys.stdin.readlines()
     else: 
         input = open(flag, 'rU')
     for line in input:
@@ -49,7 +46,10 @@ def call_dot(instr):
 
 # Run
 if __name__ == '__main__':
-    flag = sys.argv[1]
+    try:
+        flag = sys.argv[1]
+    except:
+        sys.exit("No data provided to corpViz.")
     piecesAndLinks = getPiecesAndLinks(flag)
     for trans in piecesAndLinks:
         # Weight links proportionally to MSE
