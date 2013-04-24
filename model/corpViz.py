@@ -1,30 +1,34 @@
 #!/usr/bin/env python
-'Weighted graph of precessed corpora via GraphViz.'
+"""
+Weighted graph of precessed corpora via GraphViz.
+
+Can be called on a text file containing output, or can accept piped input, from markovMusic.py.
+"""
 from subprocess import Popen, PIPE
 import subprocess
 import sys
+import platform
 import re
 
-HEADER = "digraph  dependencies { layout=neato;   splines=true; overlap=scalexy;  rankdir=LR; weight=2;"
+HEADER = "digraph { "
 FOOTER = "}"
 
 color = 'grey'
 penWidth = 1
 style = 'filled'
-
-piecesAndLinks = []
 mSEs = []
 graphOut = [HEADER]
 
-def call_dot(instr):
-    'call dot, returning stdout and stdout'
-    dot = Popen('dot -Tgv'.split(), stdout=PIPE, stderr=PIPE, stdin=PIPE)
-    return dot.communicate(instr)
-
-# Run
-if __name__ == '__main__':
-    # Parse data into lists
-    input = open('testout.txt', 'rU')
+# Parse data into lists
+piecesAndLinks = []
+def getPiecesAndLinks(flag):
+    if flag == '':
+        print "No data provided."
+        sys.exit()
+    elif flag == '-':
+        input = readLines(sys.stdin())
+    else: 
+        input = open(flag, 'rU')
     for line in input:
         if re.search(r'(.+.mid) to (.+.mid)', line):
             parsed = re.sub(r'(.+)(.mid) to (.+)(.mid)', r'\1 -> \3', line).rstrip()
@@ -36,11 +40,22 @@ if __name__ == '__main__':
                 parsed = (float(re.sub(r'(MSE: )(.+)', r'\2', line).rstrip()))
             mSEs.append(parsed)
             print mSEs
+    return piecesAndLinks
 
+def call_dot(instr):
+    'call dot, returning stdout and stdout'
+    dot = Popen('dot -Tgv'.split(), stdout=PIPE, stderr=PIPE, stdin=PIPE)
+    return dot.communicate(instr)
+
+# Run
+if __name__ == '__main__':
+    flag = sys.argv[1]
+    piecesAndLinks = getPiecesAndLinks(flag)
     for trans in piecesAndLinks:
-        # linking proportional to MSE?
-#        graphOut.append(trans + ('[dir=none][shape=box][penwidth=%d][fillcolor=%s][style=%s][weight=%d]' % (penWidth, color, 'invis', mSEs[piecesAndLinks.index(trans)])))
-        graphOut.append(trans + ('[dir=none][shape=box][penwidth=%d][fillcolor=%s][len=%g]' % (penWidth, color, mSEs[piecesAndLinks.index(trans)])))
+        # Weight links proportionally to MSE
+        weight = 1000 - (mSEs[piecesAndLinks.index(trans)] * 100000)
+        print weight
+        graphOut.append(trans + ('[dir=none][shape=box][penwidth=%d][fillcolor=%s][weight=%d]' % (penWidth, color, weight)))
 
     # potentially append genre information
 #    print ('Making and Linking Tag Nodes')
@@ -57,8 +72,12 @@ if __name__ == '__main__':
         print ('Error calling dot:')
         print (err.strip())
 
-    print ('Writing to /tmp/corpViz.gv')
-    with open('/tmp/corpViz.gv', 'w') as f:
+    print ('Writing to corpViz-out.gv')
+    with open('corpViz-out.gv', 'w') as f:
         f.write(gv)
 
-subprocess.call("open /tmp/corpViz.gv", shell = True)
+    if platform.system() == 'Darwin':
+        try:
+            subprocess.call("open /tmp/corpViz.gv", shell = True)
+        except:
+            print "Can't find GraphViz...."
