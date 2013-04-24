@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+Call on a file containing paths to pieces, one piece per line. Lines which either begin with a # or are blank are ignored.
+"""
+
 # Required modules installed in Python
 import sys
 import os
