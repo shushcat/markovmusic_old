@@ -24,7 +24,7 @@ piecesAndLinks = []
 def getPiecesAndLinks(flag):
     if flag == '-':
         input = sys.stdin.readlines()
-    else: 
+    else:
         input = open(flag, 'rU')
     for line in input:
         if re.search(r'(.+.mid) to (.+.mid)', line):

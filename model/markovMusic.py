@@ -51,7 +51,7 @@ def getProbMat(piece):
        	        c = transProbs[a + b]
        	        probMat[i][j] = c
        	    except:
-       	        probMat[i][j] = 0      	 
+       	        probMat[i][j] = 0
             j = j + 1
         i = i + 1
     return probMat
@@ -64,7 +64,7 @@ def meanSquareError(probMat1, probMat2):
         j = 0
         totDiff = 0
         while j < 12:
-            addrIn1 = probMat1[i][j]  
+            addrIn1 = probMat1[i][j]
             addrIn2 = probMat2[i][j]
             totDiff =  math.fabs(addrIn1 - addrIn2)
             meanSquareError = meanSquareError + (totDiff * totDiff)
