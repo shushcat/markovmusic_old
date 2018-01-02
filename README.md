@@ -7,7 +7,3 @@ and clustering based on similarity.
 
 In its current state, this project requires a fair amount of
 hacking around to produce results.
-
-## Notice
-
-This repository will no longer be updated; future work in this vein will be carried out at https://github.com/shushcat/markovmusic
